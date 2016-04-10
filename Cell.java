@@ -1,6 +1,7 @@
 import javalib.impworld.*;
 import javalib.worldimages.*;
 import java.awt.Color;
+import java.util.ArrayList;
 
 // Represents a cell in a maze.
 class Cell extends GMember {
@@ -12,6 +13,7 @@ class Cell extends GMember {
     boolean bottomWall;
     boolean wasVisited;
     boolean isOnPath;
+    ArrayList<Edge> edges;
     
     Cell(int r, int c) {
         super();
@@ -21,6 +23,7 @@ class Cell extends GMember {
         this.bottomWall = true;
         this.wasVisited = false;
         this.isOnPath = false;
+        this.edges = new ArrayList<Edge>();
     }
     
     // Draws this cell onto the given base scene.
