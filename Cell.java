@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 // Represents a cell in a maze.
 class Cell extends GMember {
-    static final int SIZE = 20;
+    static final int SIZE = 10;
     
     int r;
     int c;
