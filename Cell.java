@@ -2,6 +2,7 @@ import javalib.impworld.*;
 import javalib.worldimages.*;
 import java.awt.Color;
 
+// Represents a cell in a maze.
 class Cell extends GMember {
     static final int SIZE = 20;
     
@@ -22,6 +23,7 @@ class Cell extends GMember {
         this.isOnPath = (r % 2) == 1;
     }
     
+    // Draws this cell onto the given base scene.
     WorldScene draw(WorldScene base) {
         Color color = new Color(0xE0E0E0);
         if (this.wasVisited) {

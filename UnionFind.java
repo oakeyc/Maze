@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+// A member for a union-find algorithm.
 abstract class GMember {
     GLeader leader;
     
@@ -36,6 +37,7 @@ abstract class GMember {
     }
 }
 
+// A leader for a union-find algorithm.
 class GLeader {
     ArrayList<GMember> members;
     

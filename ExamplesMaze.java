@@ -1,5 +1,6 @@
 import tester.*;
 
+// Examples and tests
 class ExamplesMaze {
     // Runs the game.
     void testMaze(Tester t) {

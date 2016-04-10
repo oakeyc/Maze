@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import javalib.impworld.*;
 
+// Represents a maze.
 public class Maze {
     ArrayList<Cell> cells;
     
@@ -13,6 +14,7 @@ public class Maze {
         }
     }
     
+    // Draws this maze onto the given base scene.
     WorldScene draw(WorldScene base) {
         for (Cell c: this.cells) {
             base = c.draw(base);
