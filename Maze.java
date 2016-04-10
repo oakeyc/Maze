@@ -5,19 +5,19 @@ import javalib.impworld.*;
 public class Maze {
     ArrayList<Cell> cells;
     
-    Maze() {
+    Maze(int rows, int cols) {
         this.cells = new ArrayList<Cell>();
-        for (int r = 0; r < 20; r ++) {
-            for (int c = 0; c < 40; c++) {
+        for (int r = 0; r < rows; r ++) {
+            for (int c = 0; c < cols; c++) {
                 this.cells.add(new Cell(r, c));
             }
         }
     }
     
     // Draws this maze onto the given base scene.
-    WorldScene draw(WorldScene base) {
+    WorldScene draw(WorldScene base, boolean drawVisited, boolean drawPath) {
         for (Cell c: this.cells) {
-            base = c.draw(base);
+            base = c.draw(base, drawVisited, drawPath);
         }
         
         return base;
