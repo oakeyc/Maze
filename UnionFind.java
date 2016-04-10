@@ -11,7 +11,7 @@ abstract class GMember {
     // Set this member back to its default state for a new UnionFind search.
     // EFFECT: Sets leader to a new leader containing only this member.
     void resetLeader() {
-        this.setLeader(new GLeader(this));
+        this.leader = new GLeader(this);
     }
     
     // Change the leader of this member.
