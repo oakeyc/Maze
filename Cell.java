@@ -19,17 +19,17 @@ class Cell extends GMember {
         this.c = c;
         this.rightWall = true;
         this.bottomWall = true;
-        this.wasVisited = true;
-        this.isOnPath = (r % 2) == 1;
+        this.wasVisited = false;
+        this.isOnPath = false;
     }
     
     // Draws this cell onto the given base scene.
-    WorldScene draw(WorldScene base) {
+    WorldScene draw(WorldScene base, boolean drawVisited, boolean drawPath) {
         Color color = new Color(0xE0E0E0);
-        if (this.wasVisited) {
+        if (drawVisited && this.wasVisited) {
             color = new Color(0x80D0FF);
         }
-        if (this.isOnPath) {
+        if (drawPath && this.isOnPath) {
             color = new Color(0x4080FF);
         }
         WorldImage image = new RectangleImage(SIZE, SIZE, "solid", color);
