@@ -22,5 +22,13 @@ class MazeWorld extends World {
     public WorldScene makeScene() {
         return maze.draw(this.getEmptyScene(), true, true);
     }
-    
+
+    // Handles key presses.
+    @Override
+    public void onKeyEvent(String key) {
+        // Generate a new random maze.
+        if (key.equals("r")) {
+            maze.makeRandomMaze();
+        }
+    }
 }
