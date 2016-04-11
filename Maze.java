@@ -85,6 +85,11 @@ public class Maze {
         }
     }
     
+    // Returns the cell at the given row and column.
+    Cell cellAt(int r, int c) {
+        return this.cells.get(r + c * this.cols);
+    }
+    
     // Generates an array-list of edges connecting all cells in the given matrix,
     // like a rectangular grid.
     // Horizontal edges more likely to be chosen in Kruskal's algorithm the more positive
