@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 import javalib.impworld.*;
+import java.util.HashMap;
 
 // Represents a maze.
 public class Maze {
@@ -16,17 +17,21 @@ public class Maze {
     
     // EFFECT: Sets cells to a new list of cells that represents a new random maze.
     void makeMaze(int type) {
+        // Generate grid of cells.
         this.cells = new ArrayList<Cell>();
         ArrayList<ArrayList<Cell>> matrix = new ArrayList<ArrayList<Cell>>();
         
         for (int r = 0; r < this.rows; r++) {
             ArrayList<Cell> row = new ArrayList<Cell>();
             for (int c = 0; c < this.cols; c++) {
-                row.add(new Cell(r, c));
+                Cell cell = new Cell(r, c);
+                this.cells.add(cell);
+                row.add(cell);
             }
             matrix.add(row);
         }
         
+        // Generate edges of random weights.
         ArrayList<Edge> edges;
         
         if (type == 0) {
@@ -41,9 +46,9 @@ public class Maze {
         
         
         // Run Kruskal's algorithm on all edges.
-        edges = this.kruskal(edges);
+        edges = this.kruskal(this.cells, edges);
         
-        // Give edges to their appropriate direction in the appropriate cells.
+        // Give remaining edges to their appropriate direction in the appropriate cells.
         for (Edge e: edges) {
             Cell c1 = e.cell1;
             Cell c2 = e.cell2;
@@ -87,7 +92,6 @@ public class Maze {
         for (int r = 0; r < this.rows; r++) {
             for (int c = 0; c < this.cols; c++) {
                 Cell cell = matrix.get(r).get(c);
-                this.cells.add(cell);
                 if (r < this.rows - 1) {
                     edges.add(new Edge(cell, matrix.get(r + 1).get(c),
                             rand.nextInt(100) + horizontalWeight));
@@ -103,13 +107,27 @@ public class Maze {
     }
     
     // Runs Kruskal's algorithm on the given list of edges.
-    ArrayList<Edge> kruskal(ArrayList<Edge> edges) {
+    ArrayList<Edge> kruskal(ArrayList<Cell> cells, ArrayList<Edge> edges) {
+        // Generate the hashmap for union-find.
+        HashMap<Integer, Integer> leaders = new HashMap<Integer, Integer>();
+        for (Cell cell : cells) {
+            leaders.put(cell.hashCode(), cell.hashCode());
+        }
+        // Run Kruskal's algorithm on edges using union-find.
         this.edgeSort(edges);
         ArrayList<Edge> result = new ArrayList<Edge>();
         while (edges.size() > 0) {
             Edge edge = edges.remove(0);
-            if (!edge.cell1.find(edge.cell2)) {
-                edge.cell1.union(edge.cell2);
+            int leader1 = leaders.get(edge.cell1.hashCode());
+            while (leader1 != leaders.get(leader1)) {
+                leader1 = leaders.get(leader1);
+            }
+            int leader2 = leaders.get(edge.cell2.hashCode());
+            while (leader2 != leaders.get(leader2)) {
+                leader2 = leaders.get(leader2);
+            }
+            if (leader1 != leader2) {
+                leaders.put(leader1, leader2);
                 result.add(edge);
             }
         }
