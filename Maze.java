@@ -72,7 +72,7 @@ public class Maze {
     ArrayList<Edge> kruskal(ArrayList<Edge> edges, int nodes) {
         edges = this.edgeSort(edges);
         ArrayList<Edge> result = new ArrayList<Edge>();
-        while (result.size() < nodes - 1) {
+        while (edges.size() > 0) {
             Edge edge = edges.remove(0);
             if (!edge.cell1.find(edge.cell2)) {
                 edge.cell1.union(edge.cell2);
