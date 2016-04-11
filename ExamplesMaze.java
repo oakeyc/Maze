@@ -127,9 +127,29 @@ class ExamplesMaze {
         m.mergeHelp(edges, 0, 1);
         t.checkExpect(edges, result);
     }
+    
+    // Tests the getOtherCell method for Edges.
+    void testGetOtherCell(Tester t) {
+        this.initEdges();
+        t.checkExpect(this.e1.getOtherCell(this.c1), this.c2);
+        t.checkExpect(this.e1.getOtherCell(this.c2), this.c1);
+        t.checkException(new RuntimeException("The cell is not on this edge."), this.e1,
+                "getOtherCell", this.c3);
+    }
+    
+    // Tests the cellAt method for Mazes.
+    void testCellAt(Tester t) {
+        Maze m = new Maze(5, 5, 0);
+        t.checkExpect(m.cellAt(0, 0), new Cell(0, 0));
+        t.checkExpect(m.cellAt(3, 3), new Cell(3, 3));
+        t.checkException(new IllegalArgumentException("Invalid row."), m, "cellAt", -1, 0);
+        t.checkException(new IllegalArgumentException("Invalid row."), m, "cellAt", 5, 0);
+        t.checkException(new IllegalArgumentException("Invalid column."), m, "cellAt", 0, -1);
+        t.checkException(new IllegalArgumentException("Invalid column."), m, "cellAt", 0, 5);
+    }
 }
 
 /**
  * To test:
- *  nothing
+ *  Player.move();
  */
