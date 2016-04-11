@@ -20,16 +20,20 @@ class ExamplesMaze {
     
     // Initializes Edge fields.
     void initEdges() {
-        this.c1 = new Cell(0, 0);
-        this.c2 = new Cell(10, 0);
-        this.c3 = new Cell(0, 10);
-        this.c4 = new Cell(10, 10);
+        this.initCells();
         this.e1 = new Edge(c1, c2, 20);
         this.e2 = new Edge(c2, c4, 10);
         this.e3 = new Edge(c3, c4, 60);
         this.e4 = new Edge(c3, c1, 10);
         this.e5 = new Edge(c3, c2, 45);
         this.e6 = new Edge(c1, c4, 5);
+    }
+    
+    void initCells() {
+        this.c1 = new Cell(0, 0);
+        this.c2 = new Cell(10, 0);
+        this.c3 = new Cell(0, 10);
+        this.c4 = new Cell(10, 10);
     }
     
     // Runs the game.
@@ -66,12 +70,12 @@ class ExamplesMaze {
     
     // Tests the kruskal method for Mazes.
     void testKruskal(Tester t) {
+        this.initEdges();
         Maze m = new Maze(5, 5);
         ArrayList<Cell> cells =
                 new ArrayList<Cell>(Arrays.asList(this.c1, this.c2, this.c3, this.c4));
         ArrayList<Edge> edges = new ArrayList<Edge>();
         ArrayList<Edge> result = new ArrayList<Edge>();
-        this.initEdges();
         edges.add(this.e1);
         edges.add(this.e2);
         edges.add(this.e3);
