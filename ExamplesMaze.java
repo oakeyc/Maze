@@ -8,11 +8,32 @@ class ExamplesMaze {
     GMember member2;
     GMember member3;
     
+    Edge e1;
+    Edge e2;
+    Edge e3;
+    Edge e4;
+    Edge e5;
+    Edge e6;
+    
     // Initializes GMember fields.
     void initMembers() {
         this.member1 = new Cell(0, 0);
         this.member2 = new Cell(10, 0);
         this.member3 = new Cell(0, 10);
+    }
+    
+    // Initializes Edge fields.
+    void initEdges() {
+        Cell c1 = new Cell(0, 0);
+        Cell c2 = new Cell(10, 0);
+        Cell c3 = new Cell(0, 10);
+        Cell c4 = new Cell(10, 10);
+        this.e1 = new Edge(c1, c2, 20);
+        this.e2 = new Edge(c2, c4, 10);
+        this.e3 = new Edge(c3, c4, 60);
+        this.e4 = new Edge(c3, c1, 10);
+        this.e5 = new Edge(c3, c2, 45);
+        this.e6 = new Edge(c1, c4, 5);
     }
     
     // Runs the game.
@@ -26,24 +47,19 @@ class ExamplesMaze {
         Maze m = new Maze(5, 5);
         ArrayList<Edge> edges = new ArrayList<Edge>();
         ArrayList<Edge> sorted = new ArrayList<Edge>();
-        Cell cell = new Cell(0, 0);
-        Edge e1 = new Edge(cell, cell, 20);
-        Edge e2 = new Edge(cell, cell, 10);
-        Edge e3 = new Edge(cell, cell, 60);
-        Edge e4 = new Edge(cell, cell, 10);
-        Edge e5 = new Edge(cell, cell, 45);
+        this.initEdges();
         t.checkExpect(m.edgeSort(edges), edges);
-        edges.add(e1);
+        edges.add(this.e1);
         t.checkExpect(m.edgeSort(edges), edges);
-        edges.add(e2);
-        edges.add(e3);
-        edges.add(e4);
-        edges.add(e5);
-        sorted.add(e2);
-        sorted.add(e4);
-        sorted.add(e1);
-        sorted.add(e5);
-        sorted.add(e3);
+        edges.add(this.e2);
+        edges.add(this.e3);
+        edges.add(this.e4);
+        edges.add(this.e5);
+        sorted.add(this.e2);
+        sorted.add(this.e4);
+        sorted.add(this.e1);
+        sorted.add(this.e5);
+        sorted.add(this.e3);
         t.checkExpect(m.edgeSort(edges), sorted);
     }
     
@@ -109,7 +125,7 @@ class ExamplesMaze {
         this.member1.union(this.member3);
     }
     
-    // Tests the union method for GMembers.
+    // Tests the groupSize method for GLeaders.
     void testGroupSize(Tester t) {
         initMembers();
         GLeader leader1 = this.member1.leader;
@@ -122,14 +138,105 @@ class ExamplesMaze {
         leader2.addMember(this.member3);
         t.checkExpect(leader2.groupSize(), 3);
     }
+    
+    // Tests the union method for GLeaders.
+    void testLeaderUnion(Tester t) {
+        initMembers();
+        GLeader leader1 = this.member1.leader;
+        GLeader leader2 = this.member2.leader;
+        GLeader leader3 = this.member3.leader;
+        t.checkExpect(leader1, new GLeader(this.member1));
+        t.checkExpect(leader2, new GLeader(this.member2));
+        t.checkExpect(leader3, new GLeader(this.member3));
+        GLeader result1 = new GLeader(this.member2);
+        result1.addMember(this.member1);
+        GLeader result2 = new GLeader(this.member1);
+        result2.members.clear();
+        leader1.union(leader2);
+        t.checkExpect(leader1, result2);
+        t.checkExpect(leader2, result1);
+        leader1.union(leader3);
+        t.checkExpect(leader3, new GLeader(this.member3));
+        t.checkExpect(leader1, result2);
+        GLeader result3 = new GLeader(this.member3);
+        result3.addMember(member2);
+        result3.addMember(member1);
+        leader2.union(leader3);
+        t.checkExpect(leader2, result2);
+        t.checkExpect(leader3, result3);
+    }
+    
+    // Tests the addMember method for GLeaders.
+    void testAddMember(Tester t) {
+        this.initMembers();
+        GLeader leader1 = this.member1.leader;
+        ArrayList<GMember> result = new ArrayList<GMember>();
+        result.add(this.member1);
+        t.checkExpect(leader1.members, result);
+        leader1.addMember(this.member3);
+        result.add(this.member3);
+        t.checkExpect(leader1.members, result);
+        leader1.addMember(this.member2);
+        result.add(this.member2);
+        t.checkExpect(leader1.members, result);
+    }
+    
+    // Tests the kruskal method for Mazes.
+    void testKruskal(Tester t) {
+        Maze m = new Maze(5, 5);
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        ArrayList<Edge> result = new ArrayList<Edge>();
+        this.initEdges();
+        edges.add(this.e1);
+        edges.add(this.e2);
+        edges.add(this.e3);
+        edges.add(this.e4);
+        edges.add(this.e5);
+        result.add(this.e2);
+        result.add(this.e4);
+        result.add(this.e1);
+        t.checkExpect(m.kruskal(edges, 4), result);
+        this.initEdges();
+        edges.clear();
+        edges.add(this.e1);
+        edges.add(this.e2);
+        edges.add(this.e3);
+        edges.add(this.e4);
+        edges.add(this.e5);
+        edges.add(this.e6);
+        result.clear();
+        result.add(this.e6);
+        result.add(this.e2);
+        result.add(this.e4);
+        t.checkExpect(m.kruskal(edges, 4), result);
+    }
+    
+    // Tests the mergeHelp method for Mazes.
+    void testMergeHelp(Tester t) {
+        Maze m = new Maze(5, 5);
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        ArrayList<Edge> result = new ArrayList<Edge>();
+        this.initEdges();
+        t.checkExpect(m.edgeSort(edges), edges);
+        edges.add(this.e1);
+        t.checkExpect(m.edgeSort(edges), edges);
+        edges.add(this.e2);
+        edges.add(this.e3);
+        edges.add(this.e4);
+        edges.add(this.e5);
+        result.add(this.e1);
+        result.add(this.e2);
+        result.add(this.e4);
+        result.add(this.e5);
+        result.add(this.e3);
+        t.checkExpect(m.mergeHelp(edges, 2, 4, 3), result);
+        result.set(0, this.e2);
+        result.set(1, this.e1);
+        t.checkExpect(m.mergeHelp(edges, 0, 1, 0), result);
+    }
 }
 
 /**
  * To test:
- *  GLeader.groupSize();
- *  GLeader.union();
- *  GLeader.addMember();
- *  
- *  Maze.kruskal();
- *  Maze.mergeHelp();
+ *  nothing
  */
