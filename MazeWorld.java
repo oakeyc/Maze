@@ -17,12 +17,14 @@ class MazeWorld extends World {
     MazeWorld() {
         this.maze = new Maze(ROWS, COLS);
         this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+        this.drawVisited = false;
+        this.drawPath = false;
     }
     
     @Override
     // Makes the scene for this world.
     public WorldScene makeScene() {
-        WorldScene scene = this.maze.draw(this.getEmptyScene(), true, true);
+        WorldScene scene = this.maze.draw(this.getEmptyScene(), drawVisited, drawPath);
         scene = this.player1.draw(scene);
         return scene;
     }
@@ -35,13 +37,16 @@ class MazeWorld extends World {
             this.maze.makeMaze(0);
             this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
         }
-        else if (key.equals("v")) {
+        else if (key.equals("t")) {
             this.maze.makeMaze(-1);
             this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
         }
-        else if (key.equals("h")) {
+        else if (key.equals("y")) {
             this.maze.makeMaze(1);
             this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+        }
+        else if (key.equals("v")) {
+            this.drawVisited = !this.drawVisited;
         }
         else if (key.equals("left") || key.equals("right")
                 || key.equals("up") || key.equals("down")) {
