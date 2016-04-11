@@ -222,11 +222,11 @@ class ExamplesMaze {
         ArrayList<Edge> edges = new ArrayList<Edge>();
         ArrayList<Edge> result = new ArrayList<Edge>();
         this.initEdges();
-        m.mergeHelp(edges, 0, -1, 0);
+        m.mergeHelp(edges, 0, -1);
         t.checkExpect(edges, result);
         edges.add(this.e1);
         result.add(this.e1);
-        m.mergeHelp(edges, 0, 0, 0);
+        m.mergeHelp(edges, 0, 0);
         t.checkExpect(edges, result);
         edges.add(this.e2);
         edges.add(this.e3);
@@ -236,11 +236,11 @@ class ExamplesMaze {
         result.add(this.e4);
         result.add(this.e5);
         result.add(this.e3);
-        m.mergeHelp(edges, 2, 4, 3);
+        m.mergeHelp(edges, 2, 4);
         t.checkExpect(edges, result);
         result.set(0, this.e2);
         result.set(1, this.e1);
-        m.mergeHelp(edges, 0, 1, 0);
+        m.mergeHelp(edges, 0, 1);
         t.checkExpect(edges, result);
     }
 }

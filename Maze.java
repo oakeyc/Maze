@@ -109,18 +109,19 @@ public class Maze {
     // Sorts the given list of edges in order of weight using merge sort.
     // EFFECT: Sorts the given list in place.
     void edgeSort(ArrayList<Edge> edges) {
-        this.mergeHelp(edges, 0, edges.size() - 1, edges.size() / 2);
+        this.mergeHelp(edges, 0, edges.size() - 1);
     }
     
     // A helper for edgeSort, sorts the given list from index start to index end,
     // using mid and the middle index.
     // EFFECT: Sorts the given list in place from start to end.
-    void mergeHelp(ArrayList<Edge> edges, int start, int end, int mid) {
+    void mergeHelp(ArrayList<Edge> edges, int start, int end) {
         // End condition.
         if (end > start) {
+            int mid = start + end / 2;
             // Split and sort halves.
-            mergeHelp(edges, start, mid , (start + mid) / 2);
-            mergeHelp(edges, mid + 1, end, (mid + 1 + end) / 2);
+            mergeHelp(edges, start, mid);
+            mergeHelp(edges, mid + 1, end);
             // Merge the halves.
             int ind1 = start;
             int ind2 = mid + 1;
