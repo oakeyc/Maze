@@ -16,6 +16,7 @@ class Player
         this.row = row;
         this.col = col;
         this.current = current;
+        this.current.wasVisited = true;
     }
     
     // Draws this player on the give base.
@@ -60,5 +61,7 @@ class Player
         else {
             throw new IllegalArgumentException("Must be a direction.");
         }
+        
+        this.current.wasVisited = true;
     }
 }
