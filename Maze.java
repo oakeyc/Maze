@@ -21,6 +21,18 @@ public class Maze {
         this.makeMaze(0);
     }
     
+    // Constructs a maze without random generation (used solely for testing).
+    Maze(int rows, int cols, int notUsed) {
+        this.rows = rows;
+        this.cols = cols;
+        this.cells = new ArrayList<Cell>();
+        for (int r = 0; r < this.rows; r++) {
+            for (int c = 0; c < this.cols; c++) {
+                this.cells.add(new Cell(r, c));
+            }
+        }
+    }
+    
     // EFFECT: Sets cells to a new list of cells that represents a new random maze.
     void makeMaze(int type) {
         // Generate grid of cells.
@@ -87,6 +99,12 @@ public class Maze {
     
     // Returns the cell at the given row and column.
     Cell cellAt(int r, int c) {
+        if (r < 0 || r >= this.rows) {
+            throw new IllegalArgumentException("Invalid row.");
+        }
+        if (c < 0 || c >= this.cols) {
+            throw new IllegalArgumentException("Invalid column.");
+        }
         return this.cells.get(r + c * this.cols);
     }
     
