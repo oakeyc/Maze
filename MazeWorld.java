@@ -28,7 +28,13 @@ class MazeWorld extends World {
     public void onKeyEvent(String key) {
         // Generate a new random maze.
         if (key.equals("r")) {
-            maze.makeRandomMaze();
+            maze.makeMaze(0);
+        }
+        if (key.equals("v")) {
+            maze.makeMaze(-1);
+        }
+        if (key.equals("h")) {
+            maze.makeMaze(1);
         }
     }
 }

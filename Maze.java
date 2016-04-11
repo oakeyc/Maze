@@ -11,11 +11,11 @@ public class Maze {
     Maze(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
-        this.makeRandomMaze();
+        this.makeMaze(0);
     }
     
     // EFFECT: Sets cells to a new list of cells that represents a new random maze.
-    void makeRandomMaze() {
+    void makeMaze(int type) {
         this.cells = new ArrayList<Cell>();
         ArrayList<ArrayList<Cell>> matrix = new ArrayList<ArrayList<Cell>>();
         
@@ -27,7 +27,18 @@ public class Maze {
             matrix.add(row);
         }
         
-        ArrayList<Edge> edges = this.generateEdges(matrix, 0);
+        ArrayList<Edge> edges;
+        
+        if (type == 0) {
+            edges = this.generateEdges(matrix, 0);
+        }
+        else if (type > 0) {
+            edges = this.generateEdges(matrix, 50);
+        }
+        else {
+            edges = this.generateEdges(matrix, -50);
+        }
+        
         
         // Run Kruskal's algorithm on all edges.
         edges = this.kruskal(edges);
