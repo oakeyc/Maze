@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 // Represents a cell in a maze.
-class Cell extends GMember {
+class Cell {
     static final int SIZE = 10;
     
     int r;
@@ -19,7 +19,6 @@ class Cell extends GMember {
     Edge right;
     
     Cell(int r, int c) {
-        super();
         this.r = r;
         this.c = c;
         this.rightWall = true;
