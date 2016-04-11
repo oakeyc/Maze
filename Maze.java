@@ -18,24 +18,17 @@ public class Maze {
     void makeRandomMaze() {
         this.cells = new ArrayList<Cell>();
         ArrayList<ArrayList<Cell>> matrix = new ArrayList<ArrayList<Cell>>();
-        ArrayList<Edge> edges = new ArrayList<Edge>();
         Random rand = new Random();
         
-        for (int r = 0; r < this.rows; r ++) {
+        for (int r = 0; r < this.rows; r++) {
             ArrayList<Cell> row = new ArrayList<Cell>();
             for (int c = 0; c < this.cols; c++) {
-                Cell cell = new Cell(r, c);
-                if (c > 0) {
-                    edges.add(new Edge(cell, row.get(c - 1), rand.nextInt(100)));
-                }
-                if (r > 0) {
-                    edges.add(new Edge(cell, matrix.get(r - 1).get(c), rand.nextInt(100)));
-                }
                 row.add(new Cell(r, c));
-                this.cells.add(cell);
             }
             matrix.add(row);
         }
+        
+        ArrayList<Edge> edges = this.generateEdges(matrix, 0);
         
         // Run Kruskal's algorithm on all edges.
         edges = this.kruskal(edges);
@@ -68,9 +61,31 @@ public class Maze {
         }
     }
     
+    // Generates an array-list of edges connecting all cells in the given matrix,
+    // like a rectangular grid.
+    ArrayList<Edge> generateEdges(ArrayList<ArrayList<Cell>> matrix, int horizontalWeight) {
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        Random rand = new Random();
+        for (int r = 0; r < this.rows; r++) {
+            for (int c = 0; c < this.cols; c++) {
+                Cell cell = matrix.get(r).get(c);
+                this.cells.add(cell);
+                if (r < this.rows - 1) {
+                    edges.add(new Edge(cell, matrix.get(r + 1).get(c),
+                            rand.nextInt(100)));
+                }
+                if (c < this.cols - 1) {
+                    edges.add(new Edge(cell, matrix.get(r).get(c + 1),
+                            rand.nextInt(100 + horizontalWeight)));
+                }
+            }
+        }
+        return edges;
+    }
+    
     // Runs Kruskal's algorithm on the given list of edges.
     ArrayList<Edge> kruskal(ArrayList<Edge> edges) {
-        edges = this.edgeSort(edges);
+        this.edgeSort(edges);
         ArrayList<Edge> result = new ArrayList<Edge>();
         while (edges.size() > 0) {
             Edge edge = edges.remove(0);
@@ -84,18 +99,20 @@ public class Maze {
     }
     
     // Sorts the given list of edges in order of weight using merge sort.
-    ArrayList<Edge> edgeSort(ArrayList<Edge> edges) {
-        return this.mergeHelp(edges, 0, edges.size() - 1, edges.size() / 2);
+    // EFFECT: Sorts the given list in place.
+    void edgeSort(ArrayList<Edge> edges) {
+        this.mergeHelp(edges, 0, edges.size() - 1, edges.size() / 2);
     }
     
     // A helper for edgeSort, sorts the given list from index start to index end,
     // using mid and the middle index.
-    ArrayList<Edge> mergeHelp(ArrayList<Edge> edges, int start, int end, int mid) {
+    // EFFECT: Sorts the given list in place from start to end.
+    void mergeHelp(ArrayList<Edge> edges, int start, int end, int mid) {
         // End condition.
         if (end > start) {
             // Split and sort halves.
-            edges = mergeHelp(edges, start, mid , (start + mid) / 2);
-            edges = mergeHelp(edges, mid + 1, end, (mid + 1 + end) / 2);
+            mergeHelp(edges, start, mid , (start + mid) / 2);
+            mergeHelp(edges, mid + 1, end, (mid + 1 + end) / 2);
             // Merge the halves.
             int ind1 = start;
             int ind2 = mid + 1;
@@ -125,8 +142,6 @@ public class Maze {
                 edges.set(start + i, result.get(i));
             }
         }
-        
-        return edges;
     }
     
     // Draws this maze onto the given base scene.
