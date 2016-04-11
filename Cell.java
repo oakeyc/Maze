@@ -62,4 +62,18 @@ class Cell {
         
         return base;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Cell) {
+            Cell c = (Cell) o;
+            return this.r == c.r && this.c == c.c;
+        }
+        return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return this.r * 1000 + this.c;
+    }
 }
