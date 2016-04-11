@@ -13,7 +13,10 @@ class Cell extends GMember {
     boolean bottomWall;
     boolean wasVisited;
     boolean isOnPath;
-    ArrayList<Edge> edges;
+    Edge top;
+    Edge bottom;
+    Edge left;
+    Edge right;
     
     Cell(int r, int c) {
         super();
@@ -23,7 +26,10 @@ class Cell extends GMember {
         this.bottomWall = true;
         this.wasVisited = false;
         this.isOnPath = false;
-        this.edges = new ArrayList<Edge>();
+        this.top = null;
+        this.bottom = null;
+        this.left = null;
+        this.right = null;
     }
     
     // Draws this cell onto the given base scene.
