@@ -12,15 +12,19 @@ class MazeWorld extends World {
     boolean drawPath;
     
     Maze maze;
+    Player player1;
     
     MazeWorld() {
         this.maze = new Maze(ROWS, COLS);
+        this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
     }
     
     @Override
     // Makes the scene for this world.
     public WorldScene makeScene() {
-        return maze.draw(this.getEmptyScene(), true, true);
+        WorldScene scene = this.maze.draw(this.getEmptyScene(), true, true);
+        scene = this.player1.draw(scene);
+        return scene;
     }
 
     // Handles key presses.
@@ -28,13 +32,20 @@ class MazeWorld extends World {
     public void onKeyEvent(String key) {
         // Generate a new random maze.
         if (key.equals("r")) {
-            maze.makeMaze(0);
+            this.maze.makeMaze(0);
+            this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
         }
-        if (key.equals("v")) {
-            maze.makeMaze(-1);
+        else if (key.equals("v")) {
+            this.maze.makeMaze(-1);
+            this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
         }
-        if (key.equals("h")) {
-            maze.makeMaze(1);
+        else if (key.equals("h")) {
+            this.maze.makeMaze(1);
+            this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+        }
+        else if (key.equals("left") || key.equals("right")
+                || key.equals("up") || key.equals("down")) {
+            player1.move(key);
         }
     }
 }
