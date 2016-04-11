@@ -118,7 +118,7 @@ public class Maze {
     void mergeHelp(ArrayList<Edge> edges, int start, int end) {
         // End condition.
         if (end > start) {
-            int mid = start + end / 2;
+            int mid = (start + end) / 2;
             // Split and sort halves.
             mergeHelp(edges, start, mid);
             mergeHelp(edges, mid + 1, end);
