@@ -36,22 +36,25 @@ public class Maze {
         for (Edge e: edges) {
             Cell c1 = e.cell1;
             Cell c2 = e.cell2;
-            if(c1.r != c2.r) {
+            if (c1.r != c2.r) {
                 if (c1.r > c2.r) {
                     c2.bottomWall = false;
                     c2.bottom = e;
                     c1.top = e;
-                } else {
+                }
+                else {
                     c1.bottomWall = false;
                     c1.bottom = e;
                     c2.top = e;
                 }
-            } else {
+            }
+            else {
                 if (c1.c > c2.c) {
                     c2.rightWall = false;
                     c2.right = e;
                     c1.left = e;
-                } else {
+                }
+                else {
                     c1.rightWall = false;
                     c1.right = e;
                     c2.left = e;
@@ -126,7 +129,8 @@ public class Maze {
                 if (edges.get(ind1).weight <= edges.get(ind2).weight) {
                     result.add(edges.get(ind1));
                     ind1++;
-                } else {
+                }
+                else {
                     result.add(edges.get(ind2));
                     ind2++;
                 }
@@ -136,7 +140,8 @@ public class Maze {
                 for (int i = ind1; i <= mid; i++) {
                     result.add(edges.get(i));
                 }
-            } else if (ind2 <= end) {
+            }
+            else if (ind2 <= end) {
                 for (int i = ind2; i <= end; i++) {
                     result.add(edges.get(i));
                 }

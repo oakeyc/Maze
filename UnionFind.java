@@ -31,7 +31,8 @@ abstract class GMember {
     void union(GMember that) {
         if (this.leader.groupSize() > that.leader.groupSize()) {
             that.leader.union(this.leader);
-        } else {
+        }
+        else {
             this.leader.union(that.leader);
         }
     }
