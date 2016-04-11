@@ -18,58 +18,58 @@ public class Maze {
     void makeRandomMaze() {
         this.cells = new ArrayList<Cell>();
         ArrayList<ArrayList<Cell>> matrix = new ArrayList<ArrayList<Cell>>();
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        Random rand = new Random();
+        
         for (int r = 0; r < this.rows; r ++) {
             ArrayList<Cell> row = new ArrayList<Cell>();
             for (int c = 0; c < this.cols; c++) {
+                Cell cell = new Cell(r, c);
+                if (c > 0) {
+                    edges.add(new Edge(cell, row.get(c - 1), rand.nextInt(100)));
+                }
+                if (r > 0) {
+                    edges.add(new Edge(cell, matrix.get(r - 1).get(c), rand.nextInt(100)));
+                }
                 row.add(new Cell(r, c));
+                this.cells.add(cell);
             }
             matrix.add(row);
         }
         
-        ArrayList<Edge> edges = new ArrayList<Edge>();
-        Random rand = new Random();
-        for (int r = 0; r < this.rows; r++) {
-            for (int c = 0; c < this.cols; c++) {
-                Cell cell = matrix.get(r).get(c);
-                this.cells.add(cell);
-                if (r < this.rows - 1) {
-                    edges.add(new Edge(cell, matrix.get(r + 1).get(c),
-                            rand.nextInt(100)));
-                }
-                if (c < this.cols - 1) {
-                    edges.add(new Edge(cell, matrix.get(r).get(c + 1),
-                            rand.nextInt(100)));
-                }
-            }
-        }
-        
         // Run Kruskal's algorithm on all edges.
-        edges = this.kruskal(edges, this.rows * this.cols);
+        edges = this.kruskal(edges);
         
-        // Give edges to their appropriate cells.
+        // Give edges to their appropriate direction in the appropriate cells.
         for (Edge e: edges) {
             Cell c1 = e.cell1;
             Cell c2 = e.cell2;
-            c1.edges.add(e);
-            c2.edges.add(e);
             if(c1.r != c2.r) {
                 if (c1.r > c2.r) {
                     c2.bottomWall = false;
+                    c2.bottom = e;
+                    c1.top = e;
                 } else {
                     c1.bottomWall = false;
+                    c1.bottom = e;
+                    c2.top = e;
                 }
             } else {
                 if (c1.c > c2.c) {
                     c2.rightWall = false;
+                    c2.right = e;
+                    c1.left = e;
                 } else {
                     c1.rightWall = false;
+                    c1.right = e;
+                    c2.left = e;
                 }
             }
         }
     }
     
     // Runs Kruskal's algorithm on the given list of edges.
-    ArrayList<Edge> kruskal(ArrayList<Edge> edges, int nodes) {
+    ArrayList<Edge> kruskal(ArrayList<Edge> edges) {
         edges = this.edgeSort(edges);
         ArrayList<Edge> result = new ArrayList<Edge>();
         while (edges.size() > 0) {
