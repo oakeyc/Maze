@@ -1,3 +1,4 @@
+// Represents an edge in a weighted, non-directed graph.
 class Edge {
     int weight;
     Cell cell1;
