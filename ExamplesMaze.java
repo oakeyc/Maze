@@ -48,19 +48,24 @@ class ExamplesMaze {
         ArrayList<Edge> edges = new ArrayList<Edge>();
         ArrayList<Edge> sorted = new ArrayList<Edge>();
         this.initEdges();
-        t.checkExpect(m.edgeSort(edges), edges);
+        m.edgeSort(edges);
+        t.checkExpect(edges, sorted);
         edges.add(this.e1);
-        t.checkExpect(m.edgeSort(edges), edges);
+        sorted.add(this.e1);
+        m.edgeSort(edges);
+        t.checkExpect(edges, sorted);
         edges.add(this.e2);
         edges.add(this.e3);
         edges.add(this.e4);
         edges.add(this.e5);
+        sorted.clear();
         sorted.add(this.e2);
         sorted.add(this.e4);
         sorted.add(this.e1);
         sorted.add(this.e5);
         sorted.add(this.e3);
-        t.checkExpect(m.edgeSort(edges), sorted);
+        m.edgeSort(edges);
+        t.checkExpect(edges, sorted);
     }
     
     // Tests the setLeader method for GMembers.
@@ -195,7 +200,7 @@ class ExamplesMaze {
         result.add(this.e2);
         result.add(this.e4);
         result.add(this.e1);
-        t.checkExpect(m.kruskal(edges, 4), result);
+        t.checkExpect(m.kruskal(edges), result);
         this.initEdges();
         edges.clear();
         edges.add(this.e1);
@@ -208,7 +213,7 @@ class ExamplesMaze {
         result.add(this.e6);
         result.add(this.e2);
         result.add(this.e4);
-        t.checkExpect(m.kruskal(edges, 4), result);
+        t.checkExpect(m.kruskal(edges), result);
     }
     
     // Tests the mergeHelp method for Mazes.
@@ -217,22 +222,26 @@ class ExamplesMaze {
         ArrayList<Edge> edges = new ArrayList<Edge>();
         ArrayList<Edge> result = new ArrayList<Edge>();
         this.initEdges();
-        t.checkExpect(m.edgeSort(edges), edges);
+        m.mergeHelp(edges, 0, -1, 0);
+        t.checkExpect(edges, result);
         edges.add(this.e1);
-        t.checkExpect(m.edgeSort(edges), edges);
+        result.add(this.e1);
+        m.mergeHelp(edges, 0, 0, 0);
+        t.checkExpect(edges, result);
         edges.add(this.e2);
         edges.add(this.e3);
         edges.add(this.e4);
         edges.add(this.e5);
-        result.add(this.e1);
         result.add(this.e2);
         result.add(this.e4);
         result.add(this.e5);
         result.add(this.e3);
-        t.checkExpect(m.mergeHelp(edges, 2, 4, 3), result);
+        m.mergeHelp(edges, 2, 4, 3);
+        t.checkExpect(edges, result);
         result.set(0, this.e2);
         result.set(1, this.e1);
-        t.checkExpect(m.mergeHelp(edges, 0, 1, 0), result);
+        m.mergeHelp(edges, 0, 1, 0);
+        t.checkExpect(edges, result);
     }
 }
 
