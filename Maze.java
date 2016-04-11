@@ -18,7 +18,6 @@ public class Maze {
     void makeRandomMaze() {
         this.cells = new ArrayList<Cell>();
         ArrayList<ArrayList<Cell>> matrix = new ArrayList<ArrayList<Cell>>();
-        Random rand = new Random();
         
         for (int r = 0; r < this.rows; r++) {
             ArrayList<Cell> row = new ArrayList<Cell>();
@@ -63,23 +62,29 @@ public class Maze {
     
     // Generates an array-list of edges connecting all cells in the given matrix,
     // like a rectangular grid.
+    // Horizontal edges more likely to be chosen in Kruskal's algorithm the more positive
+    //   horizontalWeight is.
+    // Vertical edges more likely to be chosen in Kruskal's algorithm the more negative
+    //   horizontalWeight is.
     ArrayList<Edge> generateEdges(ArrayList<ArrayList<Cell>> matrix, int horizontalWeight) {
         ArrayList<Edge> edges = new ArrayList<Edge>();
         Random rand = new Random();
+        
         for (int r = 0; r < this.rows; r++) {
             for (int c = 0; c < this.cols; c++) {
                 Cell cell = matrix.get(r).get(c);
                 this.cells.add(cell);
                 if (r < this.rows - 1) {
                     edges.add(new Edge(cell, matrix.get(r + 1).get(c),
-                            rand.nextInt(100)));
+                            rand.nextInt(100) + horizontalWeight));
                 }
                 if (c < this.cols - 1) {
                     edges.add(new Edge(cell, matrix.get(r).get(c + 1),
-                            rand.nextInt(100 + horizontalWeight)));
+                            rand.nextInt(100)));
                 }
             }
         }
+        
         return edges;
     }
     
