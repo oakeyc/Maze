@@ -113,6 +113,7 @@ public class Maze {
         for (Cell cell : cells) {
             leaders.put(cell.hashCode(), cell.hashCode());
         }
+        
         // Run Kruskal's algorithm on edges using union-find.
         this.edgeSort(edges);
         ArrayList<Edge> result = new ArrayList<Edge>();
