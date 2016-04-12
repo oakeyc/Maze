@@ -19,6 +19,7 @@ class MazeWorld extends World {
         this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
         this.drawVisited = false;
         this.drawPath = false;
+
     }
     
     @Override
