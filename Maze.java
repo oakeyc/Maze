@@ -235,7 +235,7 @@ public class Maze {
         while (!current.isEndCell())
         {
             boolean wasAdded = false;
-            
+
             for (Cell curr: neighbs)
             {
                 int leader1 = leaders.get(curr.hashCode());
@@ -253,22 +253,22 @@ public class Maze {
                     wasAdded = true;
                 }
             }
-            
+
             current.wasVisited = true;
             if (!wasAdded)
                 solvePath.remove(solvePath.size() - 1);
             else
                 solvePath.add(current);
-           
+
             current = workList.remove(0);
         }
-        
+
         for (Cell c : solvePath)
         {
             c.isOnPath = true;
         }
 
-        
+
         this.isSolved = true;
     }
 
@@ -280,66 +280,89 @@ public class Maze {
     // solves the maze with a depth first algorithm
     // given a position, we find the solution
     // draws it as it solves
+    //    void depthSolve(int row, int col)
+    //    {
+    //     // Generate the hashmap for union-find.
+    //        HashMap<Integer, Integer> leaders = new HashMap<Integer, Integer>();
+    //        for (Cell cell : cells) {
+    //            leaders.put(cell.hashCode(), cell.hashCode());
+    //        }
+    //
+    //        Cell current = this.cellAt(row,  col);
+    //        ArrayList<Cell> neighbs = current.getNeighbors();
+    //
+    //        ArrayList<Cell> workList = new ArrayList<Cell>();
+    //        workList.add(current);
+    //        ArrayList<Cell> solvePath = new ArrayList<Cell>();
+    //        solvePath.add(current);
+    //        
+    //        while (!this.isSolved)
+    //        {
+    //            current = workList.get(workList.size() - 1);
+    //
+    //            System.out.println(current.hashCode());
+    //            if (current.isEndCell()) {
+    //                this.isSolved = true;
+    //                break;
+    //            }
+    //
+    //            current.wasVisited = true;
+    //            neighbs = current.getNeighbors();
+    //            boolean wasAdded = false;
+    //            
+    //            for (Cell curr: neighbs)
+    //            {
+    //                int leader1 = leaders.get(curr.hashCode());
+    //                while (leader1 != leaders.get(leader1)) {
+    //                    leader1 = leaders.get(leader1);
+    //                }
+    //                int leader2 = leaders.get(current.hashCode());
+    //                while (leader2 != leaders.get(leader2)) {
+    //                    leader2 = leaders.get(leader2);
+    //                }
+    //                if (leader1 != leader2) {
+    //                    leaders.put(leader1, leader2);
+    //                    // visit it
+    //                    workList.add(curr);
+    //                    wasAdded = true;
+    //                }
+    //            }
+    //            
+    //            if (!wasAdded)// && workList.size() != 0 && solvePath.size() != 0)
+    //            {
+    //                workList.remove(workList.size() - 1);
+    //                solvePath.remove(solvePath.size() - 1);
+    //            }
+    //            else
+    //                solvePath.add(current);
+    //        }
+    //        
+    //        for (Cell c : solvePath)
+    //        {
+    //            c.isOnPath = true;
+    //        }
+    //    }
+
     void depthSolve(int row, int col)
     {
-     // Generate the hashmap for union-find.
-        HashMap<Integer, Integer> leaders = new HashMap<Integer, Integer>();
-        for (Cell cell : cells) {
-            leaders.put(cell.hashCode(), cell.hashCode());
-        }
-
         Cell current = this.cellAt(row,  col);
-        ArrayList<Cell> neighbs = current.getNeighbors();
 
-        ArrayList<Cell> workList = new ArrayList<Cell>();
-        workList.add(current);
-        ArrayList<Cell> solvePath = new ArrayList<Cell>();
-        solvePath.add(current);
+        ArrayList<Cell> visited = new ArrayList<Cell>();
+        visited.add(current);
+        ArrayList<Cell> toVisit = new ArrayList<Cell>();
+        toVisit.addAll(current.getNeighbors());
         
-        while (!this.isSolved)
-        {
-            current = workList.get(workList.size() - 1);
+        depthHelp(current, visited);
+    }
 
-            System.out.println(current.hashCode());
-            if (current.isEndCell()) {
-                this.isSolved = true;
-                break;
-            }
-
-            current.wasVisited = true;
-            neighbs = current.getNeighbors();
-            boolean wasAdded = false;
-            
-            for (Cell curr: neighbs)
-            {
-                int leader1 = leaders.get(curr.hashCode());
-                while (leader1 != leaders.get(leader1)) {
-                    leader1 = leaders.get(leader1);
-                }
-                int leader2 = leaders.get(current.hashCode());
-                while (leader2 != leaders.get(leader2)) {
-                    leader2 = leaders.get(leader2);
-                }
-                if (leader1 != leader2) {
-                    leaders.put(leader1, leader2);
-                    // visit it
-                    workList.add(curr);
-                    wasAdded = true;
-                }
-            }
-            
-            if (!wasAdded)// && workList.size() != 0 && solvePath.size() != 0)
-            {
-                workList.remove(workList.size() - 1);
-                solvePath.remove(solvePath.size() - 1);
-            }
-            else
-                solvePath.add(current);
-        }
-        
-        for (Cell c : solvePath)
+    void depthHelp(Cell current, ArrayList<Cell> toVisit, ArrayList<Cell> visited)
+    {
+        for (Cell c : visited)
         {
-            c.isOnPath = true;
+            if (current.equals(c))
+            {
+                return;
+            }
         }
     }
 
