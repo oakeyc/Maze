@@ -4,25 +4,10 @@ import javalib.worldimages.RectangleImage;
 import javalib.worldimages.WorldImage;
 
 // represents a player
-class Player 
+class Player extends MazeTraveler
 {
-    int row; // row position
-    int col; // col position
-    
-    // ctor 
-    Player(int row, int col)
-    {
-        this.row = row;
-        this.col = col;
-    }
-    
-    WorldScene draw(WorldScene base)
-    {
-        WorldImage image = new RectangleImage(Cell.SIZE, Cell.SIZE, 
-                "solid", Color.MAGENTA);
-
-        base.placeImageXY(image, 
-                this.row * Cell.SIZE, this.col * Cell.SIZE);
-        return base;
+    // ctor
+    Player(int row, int col, Cell current) {
+        super(row, col, current);
     }
 }
