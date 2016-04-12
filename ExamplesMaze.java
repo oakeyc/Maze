@@ -39,7 +39,8 @@ class ExamplesMaze {
     // Runs the game.
     void testMaze(Tester t) {
         MazeWorld world = new MazeWorld();
-        world.bigBang(MazeWorld.WIDTH, MazeWorld.HEIGHT);
+        world.bigBang(MazeWorld.WIDTH, MazeWorld.HEIGHT,
+                1);
     }
     
     // Tests the edgeSort method for Mazes.
@@ -152,4 +153,11 @@ class ExamplesMaze {
 /**
  * To test:
  *  Player.move();
+ *  depthSolve()
+ *  depthHelper()
+ *  breadthSolve()
+ *  breadthHelper()
+ *  isEnd() ... something like that
+ *  onTick
+ *  onKeyEvent
  */

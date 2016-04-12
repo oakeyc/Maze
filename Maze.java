@@ -220,142 +220,22 @@ public class Maze {
     // draws it as it solves
     void breadthSolve(int row, int col)
     {   
-        // Generate the hashmap for union-find.
-        HashMap<Integer, Integer> leaders = new HashMap<Integer, Integer>();
-        for (Cell cell : cells) {
-            leaders.put(cell.hashCode(), cell.hashCode());
-        }
-
-        Cell current = this.cellAt(row,  col);
-        ArrayList<Cell> neighbs = current.getNeighbors();
-
-        ArrayList<Cell> workList = new ArrayList<Cell>();
-        ArrayList<Cell> solvePath = new ArrayList<Cell>();
-
-        while (!current.isEndCell())
-        {
-            boolean wasAdded = false;
-
-            for (Cell curr: neighbs)
-            {
-                int leader1 = leaders.get(curr.hashCode());
-                while (leader1 != leaders.get(leader1)) {
-                    leader1 = leaders.get(leader1);
-                }
-                int leader2 = leaders.get(curr.hashCode());
-                while (leader2 != leaders.get(leader2)) {
-                    leader2 = leaders.get(leader2);
-                }
-                if (leader1 != leader2) {
-                    leaders.put(leader1, leader2);
-                    // visit it
-                    workList.add(curr);
-                    wasAdded = true;
-                }
-            }
-
-            current.wasVisited = true;
-            if (!wasAdded)
-                solvePath.remove(solvePath.size() - 1);
-            else
-                solvePath.add(current);
-
-            current = workList.remove(0);
-        }
-
-        for (Cell c : solvePath)
-        {
-            c.isOnPath = true;
-        }
-
-
-        this.isSolved = true;
-    }
-
-    void breadthHelp(HashMap<Integer, Integer> visted)
-    {
-
-    }
-
-    // solves the maze with a depth first algorithm
-    // given a position, we find the solution
-    // draws it as it solves
-    //    void depthSolve(int row, int col)
-    //    {
-    //     // Generate the hashmap for union-find.
-    //        HashMap<Integer, Integer> leaders = new HashMap<Integer, Integer>();
-    //        for (Cell cell : cells) {
-    //            leaders.put(cell.hashCode(), cell.hashCode());
-    //        }
-    //
-    //        Cell current = this.cellAt(row,  col);
-    //        ArrayList<Cell> neighbs = current.getNeighbors();
-    //
-    //        ArrayList<Cell> workList = new ArrayList<Cell>();
-    //        workList.add(current);
-    //        ArrayList<Cell> solvePath = new ArrayList<Cell>();
-    //        solvePath.add(current);
-    //        
-    //        while (!this.isSolved)
-    //        {
-    //            current = workList.get(workList.size() - 1);
-    //
-    //            System.out.println(current.hashCode());
-    //            if (current.isEndCell()) {
-    //                this.isSolved = true;
-    //                break;
-    //            }
-    //
-    //            current.wasVisited = true;
-    //            neighbs = current.getNeighbors();
-    //            boolean wasAdded = false;
-    //            
-    //            for (Cell curr: neighbs)
-    //            {
-    //                int leader1 = leaders.get(curr.hashCode());
-    //                while (leader1 != leaders.get(leader1)) {
-    //                    leader1 = leaders.get(leader1);
-    //                }
-    //                int leader2 = leaders.get(current.hashCode());
-    //                while (leader2 != leaders.get(leader2)) {
-    //                    leader2 = leaders.get(leader2);
-    //                }
-    //                if (leader1 != leader2) {
-    //                    leaders.put(leader1, leader2);
-    //                    // visit it
-    //                    workList.add(curr);
-    //                    wasAdded = true;
-    //                }
-    //            }
-    //            
-    //            if (!wasAdded)// && workList.size() != 0 && solvePath.size() != 0)
-    //            {
-    //                workList.remove(workList.size() - 1);
-    //                solvePath.remove(solvePath.size() - 1);
-    //            }
-    //            else
-    //                solvePath.add(current);
-    //        }cd
-    //        
-    //        for (Cell c : solvePath)
-    //        {
-    //            c.isOnPath = true;
-    //        }
-    //    }
-
-    void depthSolve(int row, int col)
-    {
         Cell current = this.cellAt(row,  col);
 
         ArrayList<ArrayList<Cell>> toVisit = new ArrayList<ArrayList<Cell>>();
+        ArrayList<ArrayList<Cell>> visited = new ArrayList<ArrayList<Cell>>();
+        
         ArrayList<Cell> nei = current.getNeighbors();
         toVisit.add(nei);
 
-        depthHelp(current, nei.size(), toVisit);
+        breadthHelp(current, nei.size(), toVisit, visited);
     }
 
-    // found the solution
-    boolean depthHelp(Cell current, int numNeib, ArrayList<ArrayList<Cell>> toVisit)
+    // takes in the current cell, the number of cells in its "worklist"
+    // a list of lists of different levels of worklists, and the list of lists of paths
+    // is the breadth first right now
+    boolean breadthHelp(Cell current, int numNeib, ArrayList<ArrayList<Cell>> toVisit,
+            ArrayList<ArrayList<Cell>> visited)
     {
         System.out.println("-------------------------------------------------");
 
@@ -376,12 +256,9 @@ public class Maze {
         // no more neighbors, it must return from where it came
         if (numNeib == 0)
         {
-            current.isOnPath = false;
-            System.out.println("Not on the path");
+//            current.isOnPath = false;
             return false;
         }
-
-        current.isOnPath = true;
 
         System.out.println("toVisit size: " + toVisit.size());
         System.out.println("Number of Neighbors: " + numNeib);
@@ -404,50 +281,118 @@ public class Maze {
         toVisit.add(nextNeigh);
 
         // recurse to the next level
+        if (breadthHelp(next, count, toVisit, visited))
+        {
+            current.isOnPath = true;
+            return true;
+        }
+        else // go back a list
+        {                       
+            while (toVisit.get(toVisit.size() - 1).size() == 0)
+            {
+                System.out.println("----------REMOVE---------");
+                for (Cell c : toVisit.get(toVisit.size() - 1))
+                {
+                    c.isOnPath = false;
+                } 
+                toVisit.remove(toVisit.size() - 1);
+            }
+
+            next = toVisit.get(toVisit.size() - 1).get(toVisit.get(toVisit.size() - 1).size() - 1);
+            int size = toVisit.get(toVisit.size() - 1).size();
+            return breadthHelp(next, size, toVisit, visited);
+        }
+    }
+
+    // solves the maze depth first
+    void depthSolve(int row, int col)
+    {
+        Cell current = this.cellAt(row,  col);
+
+        ArrayList<ArrayList<Cell>> toVisit = new ArrayList<ArrayList<Cell>>();
+        ArrayList<Cell> nei = current.getNeighbors();
+        toVisit.add(nei);
+        
+        MazeTraveler travis = new MazeTraveler(row, col, current);
+        depthHelp(current, nei.size(), toVisit);
+    }
+
+    // found the solution depth first
+    boolean depthHelp(Cell current, int numNeib, ArrayList<ArrayList<Cell>> toVisit)
+    {
+        System.out.println("-------------------------------------------------");
+
+        if (this.isSolved)
+        {
+            return true;
+        }
+        current.wasVisited = true;
+
+        // if we are at the end of the maze, we've found the solution
+        if (current.isEndCell())
+        {
+            current.isOnPath = true;
+            this.isSolved = true;
+            return true;
+        }
+
+        // no more neighbors, it must return from where it came
+        if (numNeib == 0)
+        {
+            current.isOnPath = false;
+            return false;
+        }
+
+        current.isOnPath = true;
+        // the next cell is the lastest one
+        Cell next = toVisit.get(toVisit.size() - 1).remove(numNeib - 1);
+        ArrayList<Cell> neigh = next.getNeighbors();
+        ArrayList<Cell> nextNeigh = new ArrayList<Cell>();
+
+        int count = 0;
+        // adding non visited cells into the work list
+        for (Cell c : neigh)
+        {
+            if (!c.wasVisited)
+            {
+                nextNeigh.add(c);
+                count++;
+            }
+        }
+        toVisit.add(nextNeigh);
+
+        // recurse to the next level
         if (depthHelp(next, count, toVisit))
         {
+            current.isOnPath = true;
             return true;
         }
         else // go back a list
         {
-//            numList++;
-            System.out.println("REMOVE");
-            toVisit.remove(toVisit.size() - 1);
- 
-            System.out.println("\nRecusion back to " + toVisit.size());
-            System.out.println("Size of last list: " + toVisit.get(toVisit.size() - 1).size() + "\n");
+
             while (toVisit.get(toVisit.size() - 1).size() == 0)
             {
+                System.out.println("----------REMOVE---------");
+                for (Cell c : toVisit.get(toVisit.size() - 1))
+                {
+                    c.isOnPath = false;
+                } 
                 toVisit.remove(toVisit.size() - 1);
-                System.out.println("-------------REMOVE------------");
             }
-            
+
             next = toVisit.get(toVisit.size() - 1).get(toVisit.get(toVisit.size() - 1).size() - 1);
             int size = toVisit.get(toVisit.size() - 1).size();
             return depthHelp(next, size, toVisit);
-
-//            while (toVisit.get(toVisit.size() - 1).size() > 0)
-//            {
-//
-//                // recurse through the next one set of neighbors
-//                int tV_size = toVisit.size() - 1;
-//                System.out.println("\n\ntV_Size: " + tV_size + " neighbs : " + (toVisit.get(tV_size).size() - 1));
-//
-//                next = toVisit.get(tV_size).remove(toVisit.get(tV_size).size() - 1);
-//
-//                return depthHelp(next, toVisit.get(tV_size).size(), toVisit);
-//            }
-            
-//            return depthHelp(toVisit.get(0).get(0), 1, numList, toVisit);
         }
     }
+    
+    
 
     // Draws this maze onto the given base scene.
     WorldScene draw(WorldScene base, boolean drawVisited, boolean drawPath) {
         for (Cell c: this.cells) {
             base = c.draw(base, drawVisited, drawPath);
         }
-
         return base;
     }
 }
