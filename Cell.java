@@ -76,4 +76,35 @@ class Cell {
     public int hashCode() {
         return this.r * 1000 + this.c;
     }
+    
+    // whether end cell or not
+    boolean isEndCell()
+    {
+        return false;
+    }
+    
+    // given nothing
+    // returns the list of neighboring cells
+    ArrayList<Cell> getNeighbors()
+    {
+        ArrayList<Cell> neighbors = new ArrayList<Cell>();
+        if (this.top != null)
+        {
+            neighbors.add(this.top.getOtherCell(this));
+        }
+        if (this.bottom != null)
+        {
+            neighbors.add(this.bottom.getOtherCell(this));
+        }
+        if (this.right != null)
+        {
+            neighbors.add(this.right.getOtherCell(this));
+        }
+        if (this.left != null)
+        {
+            neighbors.add(this.left.getOtherCell(this));
+        }
+        
+        return neighbors;
+    }
 }

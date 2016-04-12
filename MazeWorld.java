@@ -24,7 +24,7 @@ class MazeWorld extends World {
     @Override
     // Makes the scene for this world.
     public WorldScene makeScene() {
-        WorldScene scene = this.maze.draw(this.getEmptyScene(), drawVisited, drawPath);
+        WorldScene scene = this.maze.draw(this.getEmptyScene(), this.drawVisited, this.drawPath);
         scene = this.player1.draw(scene);
         return scene;
     }
@@ -50,7 +50,11 @@ class MazeWorld extends World {
         }
         else if (key.equals("left") || key.equals("right")
                 || key.equals("up") || key.equals("down")) {
-            player1.move(key);
+            this.player1.move(key);
+        }
+        else if (key.equals("d"))
+        {
+            this.maze.depthSolve(player1.row, player1.col);
         }
     }
 }

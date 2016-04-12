@@ -14,13 +14,14 @@ public class Maze {
     int rows;
     int cols;
     ArrayList<Cell> cells;
-    
+    boolean isSolved; // whether the maze is solved
+
     Maze(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         this.makeMaze(0);
     }
-    
+
     // Constructs a maze without random generation (used solely for testing).
     Maze(int rows, int cols, int notUsed) {
         this.rows = rows;
@@ -32,13 +33,13 @@ public class Maze {
             }
         }
     }
-    
+
     // EFFECT: Sets cells to a new list of cells that represents a new random maze.
     void makeMaze(int type) {
         // Generate grid of cells.
         this.cells = new ArrayList<Cell>();
         ArrayList<ArrayList<Cell>> matrix = new ArrayList<ArrayList<Cell>>();
-        
+
         for (int r = 0; r < this.rows; r++) {
             ArrayList<Cell> row = new ArrayList<Cell>();
             for (int c = 0; c < this.cols; c++) {
@@ -48,24 +49,24 @@ public class Maze {
             }
             matrix.add(row);
         }
-        
+
         // Generate edges of random weights.
         ArrayList<Edge> edges;
-        
+
         if (type == 0) {
             edges = this.generateEdges(matrix, 0);
         }
         else if (type > 0) {
-            edges = this.generateEdges(matrix, 50);
+            edges = this.generateEdges(matrix, 100);
         }
         else {
-            edges = this.generateEdges(matrix, -50);
+            edges = this.generateEdges(matrix, -100);
         }
-        
-        
+
+
         // Run Kruskal's algorithm on all edges.
         edges = this.kruskal(this.cells, edges);
-        
+
         // Give remaining edges to their appropriate direction in the appropriate cells.
         for (Edge e: edges) {
             Cell c1 = e.cell1;
@@ -96,7 +97,7 @@ public class Maze {
             }
         }
     }
-    
+
     // Returns the cell at the given row and column.
     Cell cellAt(int r, int c) {
         if (r < 0 || r >= this.rows) {
@@ -107,7 +108,7 @@ public class Maze {
         }
         return this.cells.get(r + c * this.cols);
     }
-    
+
     // Generates an array-list of edges connecting all cells in the given matrix,
     // like a rectangular grid.
     // Horizontal edges more likely to be chosen in Kruskal's algorithm the more positive
@@ -117,7 +118,7 @@ public class Maze {
     ArrayList<Edge> generateEdges(ArrayList<ArrayList<Cell>> matrix, int horizontalWeight) {
         ArrayList<Edge> edges = new ArrayList<Edge>();
         Random rand = new Random();
-        
+
         for (int r = 0; r < this.rows; r++) {
             for (int c = 0; c < this.cols; c++) {
                 Cell cell = matrix.get(r).get(c);
@@ -131,10 +132,10 @@ public class Maze {
                 }
             }
         }
-        
+
         return edges;
     }
-    
+
     // Runs Kruskal's algorithm on the given list of edges.
     ArrayList<Edge> kruskal(ArrayList<Cell> cells, ArrayList<Edge> edges) {
         // Generate the hashmap for union-find.
@@ -142,7 +143,7 @@ public class Maze {
         for (Cell cell : cells) {
             leaders.put(cell.hashCode(), cell.hashCode());
         }
-        
+
         // Run Kruskal's algorithm on edges using union-find.
         this.edgeSort(edges);
         ArrayList<Edge> result = new ArrayList<Edge>();
@@ -161,16 +162,16 @@ public class Maze {
                 result.add(edge);
             }
         }
-        
+
         return result;
     }
-    
+
     // Sorts the given list of edges in order of weight using merge sort.
     // EFFECT: Sorts the given list in place.
     void edgeSort(ArrayList<Edge> edges) {
         this.mergeHelp(edges, 0, edges.size() - 1);
     }
-    
+
     // A helper for edgeSort, sorts the given list from index start to index end,
     // using mid and the middle index.
     // EFFECT: Sorts the given list in place from start to end.
@@ -213,13 +214,141 @@ public class Maze {
             }
         }
     }
-    
+
+    // solves the maze with a breadth first algorithm
+    // given a position, we find the solution
+    // draws it as it solves
+    void breadthSolve(int row, int col)
+    {   
+        // Generate the hashmap for union-find.
+        HashMap<Integer, Integer> leaders = new HashMap<Integer, Integer>();
+        for (Cell cell : cells) {
+            leaders.put(cell.hashCode(), cell.hashCode());
+        }
+
+        Cell current = this.cellAt(row,  col);
+        ArrayList<Cell> neighbs = current.getNeighbors();
+
+        ArrayList<Cell> workList = new ArrayList<Cell>();
+        ArrayList<Cell> solvePath = new ArrayList<Cell>();
+
+        while (!current.isEndCell())
+        {
+            boolean wasAdded = false;
+            
+            for (Cell curr: neighbs)
+            {
+                int leader1 = leaders.get(curr.hashCode());
+                while (leader1 != leaders.get(leader1)) {
+                    leader1 = leaders.get(leader1);
+                }
+                int leader2 = leaders.get(curr.hashCode());
+                while (leader2 != leaders.get(leader2)) {
+                    leader2 = leaders.get(leader2);
+                }
+                if (leader1 != leader2) {
+                    leaders.put(leader1, leader2);
+                    // visit it
+                    workList.add(curr);
+                    wasAdded = true;
+                }
+            }
+            
+            current.wasVisited = true;
+            if (!wasAdded)
+                solvePath.remove(solvePath.size() - 1);
+            else
+                solvePath.add(current);
+           
+            current = workList.remove(0);
+        }
+        
+        for (Cell c : solvePath)
+        {
+            c.isOnPath = true;
+        }
+
+        
+        this.isSolved = true;
+    }
+
+    void breadthHelp(HashMap<Integer, Integer> visted)
+    {
+
+    }
+
+    // solves the maze with a depth first algorithm
+    // given a position, we find the solution
+    // draws it as it solves
+    void depthSolve(int row, int col)
+    {
+     // Generate the hashmap for union-find.
+        HashMap<Integer, Integer> leaders = new HashMap<Integer, Integer>();
+        for (Cell cell : cells) {
+            leaders.put(cell.hashCode(), cell.hashCode());
+        }
+
+        Cell current = this.cellAt(row,  col);
+        ArrayList<Cell> neighbs = current.getNeighbors();
+
+        ArrayList<Cell> workList = new ArrayList<Cell>();
+        workList.add(current);
+        ArrayList<Cell> solvePath = new ArrayList<Cell>();
+        solvePath.add(current);
+        
+        while (!this.isSolved)
+        {
+            current = workList.get(workList.size() - 1);
+
+            System.out.println(current.hashCode());
+            if (current.isEndCell()) {
+                this.isSolved = true;
+                break;
+            }
+
+            current.wasVisited = true;
+            neighbs = current.getNeighbors();
+            boolean wasAdded = false;
+            
+            for (Cell curr: neighbs)
+            {
+                int leader1 = leaders.get(curr.hashCode());
+                while (leader1 != leaders.get(leader1)) {
+                    leader1 = leaders.get(leader1);
+                }
+                int leader2 = leaders.get(current.hashCode());
+                while (leader2 != leaders.get(leader2)) {
+                    leader2 = leaders.get(leader2);
+                }
+                if (leader1 != leader2) {
+                    leaders.put(leader1, leader2);
+                    // visit it
+                    workList.add(curr);
+                    wasAdded = true;
+                }
+            }
+            
+            if (!wasAdded)// && workList.size() != 0 && solvePath.size() != 0)
+            {
+                workList.remove(workList.size() - 1);
+                solvePath.remove(solvePath.size() - 1);
+            }
+            else
+                solvePath.add(current);
+        }
+        
+        for (Cell c : solvePath)
+        {
+            c.isOnPath = true;
+        }
+    }
+
     // Draws this maze onto the given base scene.
     WorldScene draw(WorldScene base, boolean drawVisited, boolean drawPath) {
         for (Cell c: this.cells) {
             base = c.draw(base, drawVisited, drawPath);
         }
-        
+
         return base;
     }
 }
