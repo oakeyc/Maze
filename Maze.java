@@ -335,7 +335,7 @@ public class Maze {
     //            }
     //            else
     //                solvePath.add(current);
-    //        }
+    //        }cd
     //        
     //        for (Cell c : solvePath)
     //        {
@@ -347,23 +347,80 @@ public class Maze {
     {
         Cell current = this.cellAt(row,  col);
 
-        ArrayList<Cell> visited = new ArrayList<Cell>();
-        visited.add(current);
-        ArrayList<Cell> toVisit = new ArrayList<Cell>();
-        toVisit.addAll(current.getNeighbors());
-        
-        depthHelp(current, visited);
+        ArrayList<ArrayList<Cell>> toVisit = new ArrayList<ArrayList<Cell>>();
+        ArrayList<Cell> nei = current.getNeighbors();
+        toVisit.add(nei);
+
+        depthHelp(current, nei.size(), toVisit);
     }
 
-    void depthHelp(Cell current, ArrayList<Cell> toVisit, ArrayList<Cell> visited)
+    // found the solution
+    boolean depthHelp(Cell current, int numNeib, ArrayList<ArrayList<Cell>> toVisit)
     {
-        for (Cell c : visited)
+        if (this.isSolved)
         {
-            if (current.equals(c))
+            return true;
+        }
+        current.wasVisited = true;
+
+        // if we are at the end of the maze, we've found the solution
+        if (current.isEndCell())
+        {
+            current.isOnPath = true;
+            this.isSolved = true;
+            return true;
+        }
+
+        // no more neighbors, it must return from where it came
+        if (numNeib == 0)
+        {
+            current.isOnPath = false;
+            System.out.println("Not on the path");
+            return false;
+        }
+
+        current.isOnPath = true;
+
+        System.out.println("toVisit size: " + toVisit.size());
+        System.out.println("Number of Neighbors: " + numNeib);
+
+        // the next cell is the lastest one
+        Cell next = toVisit.get(toVisit.size() - 1).remove(numNeib - 1);
+        ArrayList<Cell> neigh = next.getNeighbors();
+        ArrayList<Cell> nextNeigh = new ArrayList<Cell>();
+
+        int count = 0;
+        // adding non visited cells into the work list
+        for (Cell c : neigh)
+        {
+            if (!c.wasVisited)
             {
-                return;
+                nextNeigh.add(c);
+                count++;
             }
         }
+        toVisit.add(nextNeigh);
+        //        numNeib--;
+
+        // recurse to the next level
+        if (depthHelp(next, count, toVisit))
+        {
+            return true;
+        }
+        else
+        {
+            while (toVisit.get(toVisit.size() - 1).size() > 0)
+            {
+                // recurse through the next one set of neighbors
+                int tV_size = toVisit.size() - 1;
+                System.out.println("Out of Neighbors; tV_Size: " + tV_size + " neighbs : " + (toVisit.get(tV_size).size() - 1));
+
+                next = toVisit.get(tV_size).remove(toVisit.get(tV_size).size() - 1);
+
+                return depthHelp(next, toVisit.get(tV_size).size(), toVisit);
+            }
+        }
+        return false; // idk
     }
 
     // Draws this maze onto the given base scene.
