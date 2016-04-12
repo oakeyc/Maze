@@ -13,6 +13,7 @@ class Cell {
     boolean bottomWall;
     boolean wasVisited;
     boolean isOnPath;
+    boolean isEnd;
     Edge top;
     Edge bottom;
     Edge left;
@@ -29,6 +30,13 @@ class Cell {
         this.bottom = null;
         this.left = null;
         this.right = null;
+        
+        this.isEnd = false;
+        
+        if (r == MazeWorld.ROWS - 1 && c == MazeWorld.COLS - 1)
+        {
+            this.isEnd = true;
+        }
     }
     
     // Draws this cell onto the given base scene.
@@ -80,7 +88,12 @@ class Cell {
     // whether end cell or not
     boolean isEndCell()
     {
-        return false;
+        return isEnd;
+    }
+    
+    void makeEnd()
+    {
+        this.isEnd = true;
     }
     
     // given nothing
