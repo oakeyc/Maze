@@ -351,12 +351,14 @@ public class Maze {
         ArrayList<Cell> nei = current.getNeighbors();
         toVisit.add(nei);
 
-        depthHelp(current, nei.size(), toVisit);
+        depthHelp(current, nei.size(), 1, toVisit);
     }
 
     // found the solution
-    boolean depthHelp(Cell current, int numNeib, ArrayList<ArrayList<Cell>> toVisit)
+    boolean depthHelp(Cell current, int numNeib, int numList, ArrayList<ArrayList<Cell>> toVisit)
     {
+        System.out.println("-------------------------------------------------");
+
         if (this.isSolved)
         {
             return true;
@@ -385,7 +387,7 @@ public class Maze {
         System.out.println("Number of Neighbors: " + numNeib);
 
         // the next cell is the lastest one
-        Cell next = toVisit.get(toVisit.size() - 1).remove(numNeib - 1);
+        Cell next = toVisit.get(toVisit.size() - numList).remove(numNeib - 1);
         ArrayList<Cell> neigh = next.getNeighbors();
         ArrayList<Cell> nextNeigh = new ArrayList<Cell>();
 
@@ -403,22 +405,32 @@ public class Maze {
         //        numNeib--;
 
         // recurse to the next level
-        if (depthHelp(next, count, toVisit))
+        if (depthHelp(next, count, 1, toVisit))
         {
             return true;
         }
-        else
+        else // go back a list
         {
+//            numList++;
+            toVisit.remove(toVisit.size() - 1);
+
+
+            System.out.println("\nRecusion back to " + (toVisit.size() - 1));
+            System.out.println("Size of last list: " + toVisit.get(toVisit.size() - numList).size() + "\n");
+
             while (toVisit.get(toVisit.size() - 1).size() > 0)
             {
+
                 // recurse through the next one set of neighbors
                 int tV_size = toVisit.size() - 1;
-                System.out.println("Out of Neighbors; tV_Size: " + tV_size + " neighbs : " + (toVisit.get(tV_size).size() - 1));
+                System.out.println("\n\ntV_Size: " + tV_size + " neighbs : " + (toVisit.get(tV_size).size() - 1));
 
                 next = toVisit.get(tV_size).remove(toVisit.get(tV_size).size() - 1);
 
-                return depthHelp(next, toVisit.get(tV_size).size(), toVisit);
+                return depthHelp(next, toVisit.get(tV_size).size(), 1, toVisit);
             }
+            
+//            return depthHelp(toVisit.get(0).get(0), 1, numList, toVisit);
         }
         return false; // idk
     }
