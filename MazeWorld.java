@@ -76,8 +76,8 @@ class MazeWorld extends World {
         }
         else if (key.equals("b"))
         {
-            this.maze.breadthSolve(player1.row, player1.col);
-            this.drawPath = true;
+//            this.maze.breadthSolve(player1.row, player1.col);
+//            this.drawPath = true;
         }
     }
 }

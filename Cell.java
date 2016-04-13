@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 // Represents a cell in a maze.
 class Cell {
-    static final int SIZE = 10;
+    static final int SIZE = 20;
     
     int r;
     int c;
