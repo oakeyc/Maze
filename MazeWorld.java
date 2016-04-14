@@ -15,6 +15,7 @@ class MazeWorld extends World {
 
     Maze maze;
     Player player1;
+    Solver solver;
 
     MazeWorld() {
         this.maze = new Maze(ROWS, COLS);
@@ -44,7 +45,10 @@ class MazeWorld extends World {
     {
         if (this.drawDepth)
         {
-            this.maze.depthSolve(player1.row, player1.col);
+            if (this.solver.nextStep()) {
+                this.maze.isSolved = true;
+                this.drawDepth = false;
+            }
         }
     }
 
@@ -73,6 +77,7 @@ class MazeWorld extends World {
             this.drawVisited = true;
             this.drawDepth = true;
             this.drawPath = true;
+            this.solver = new Solver(player1.current);
         }
         else if (key.equals("b"))
         {
