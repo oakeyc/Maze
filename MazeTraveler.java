@@ -21,12 +21,15 @@ class MazeTraveler {
     // Draws this player on the give base.
     WorldScene draw(WorldScene base)
     {
-        WorldImage image = new RectangleImage(Cell.SIZE - 1, Cell.SIZE - 1, 
+        int coordMod = Cell.SIZE % 2;
+        WorldImage image = new RectangleImage(
+                Cell.SIZE - 1, 
+                Cell.SIZE - 1, 
                 "solid", Color.MAGENTA);
 
         base.placeImageXY(image, 
-                this.col * Cell.SIZE + Cell.SIZE / 2 - 1,
-                this.row * Cell.SIZE + Cell.SIZE / 2 - 1);
+                this.col * Cell.SIZE + Cell.SIZE / 2 - coordMod,
+                this.row * Cell.SIZE + Cell.SIZE / 2 - coordMod);
         return base;
     }
     
