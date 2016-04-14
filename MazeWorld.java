@@ -3,22 +3,23 @@ import javalib.worldimages.*;
 
 // A world for the maze game.
 class MazeWorld extends World {
-    static final int ROWS = 20;
-    static final int COLS = 40;
+    static final int ROWS = 60;
+    static final int COLS = 100;
     static final int WIDTH = COLS * Cell.SIZE;
     static final int HEIGHT = ROWS * Cell.SIZE;
 
     boolean drawVisited;
     boolean drawPath;
-    boolean drawDepth;
-    boolean drawBreadth;
+    boolean isSolving;
+    boolean playerEnabled;
 
     Maze maze;
     Player player1;
-    ISolver solver;
+    ASolver solver;
 
     MazeWorld() {
         this.maze = new Maze(ROWS, COLS);
+        this.initMaze(0);
         this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
         this.drawVisited = false;
         this.drawPath = false;
@@ -28,7 +29,9 @@ class MazeWorld extends World {
     // Makes the scene for this world.
     public WorldScene makeScene() {
         WorldScene scene = this.maze.draw(this.getEmptyScene(), this.drawVisited, this.drawPath);
-        scene = this.player1.draw(scene);
+        if (this.playerEnabled) {
+            scene = this.player1.draw(scene);
+        }
         return scene;
     }
 
@@ -36,6 +39,8 @@ class MazeWorld extends World {
     {
         this.drawVisited = false;
         this.drawPath = false;
+        this.isSolving = false;
+        this.playerEnabled = true;
         this.maze.makeMaze(type);
         this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
     }
@@ -43,12 +48,9 @@ class MazeWorld extends World {
     @Override
     public void onTick()
     {
-        if (this.drawDepth)
+        if (this.isSolving && !this.maze.isSolved && this.solver.nextStep())
         {
-            if (this.solver.nextStep()) {
-                this.maze.isSolved = true;
-                this.drawDepth = false;
-            }
+            this.maze.isSolved = true;
         }
     }
 
@@ -68,21 +70,28 @@ class MazeWorld extends World {
         else if (key.equals("v")) {
             this.drawVisited = !this.drawVisited;
         }
-        else if (key.equals("left") || key.equals("right")
-                || key.equals("up") || key.equals("down")) {
+        else if (this.playerEnabled &&
+                (key.equals("left") || key.equals("right")
+                || key.equals("up") || key.equals("down"))) {
             this.player1.move(key);
         }
-        else if (key.equals("d"))
+        else if (key.equals("d") && !this.isSolving)
         {
+            this.isSolving = true;
             this.drawVisited = true;
-            this.drawDepth = true;
             this.drawPath = true;
-            this.solver = new DepthSolver(player1.current);
+            this.maze.clearVisited();
+            this.playerEnabled = false;
+            this.solver = new DepthSolver(this.maze.cellAt(0, 0));
         }
-        else if (key.equals("b"))
+        else if (key.equals("b") && !this.isSolving)
         {
-//            this.maze.breadthSolve(player1.row, player1.col);
-//            this.drawPath = true;
+            this.isSolving = true;
+            this.drawVisited = true;
+            this.drawPath = true;
+            this.maze.clearVisited();
+            this.playerEnabled = false;
+            this.solver = new BreadthSolver(this.maze.cellAt(0, 0));
         }
     }
 }
