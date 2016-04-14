@@ -18,11 +18,12 @@ class MazeWorld extends World {
     ASolver solver;
 
     MazeWorld() {
-        this.maze = new Maze(ROWS, COLS);
-        this.initMaze(0);
-        this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
         this.drawVisited = false;
         this.drawPath = false;
+        this.isSolving = false;
+        this.playerEnabled = true;
+        this.maze = new Maze(ROWS, COLS);
+        this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
     }
 
     @Override
