@@ -25,8 +25,8 @@ class MazeTraveler {
                 "solid", Color.MAGENTA);
 
         base.placeImageXY(image, 
-                this.col * Cell.SIZE + Cell.SIZE / 2,
-                this.row * Cell.SIZE + Cell.SIZE / 2);
+                this.col * Cell.SIZE + Cell.SIZE / 2 - 1,
+                this.row * Cell.SIZE + Cell.SIZE / 2 - 1);
         return base;
     }
     
