@@ -70,11 +70,13 @@ class MazeWorld extends World {
         else if (key.equals("v")) {
             this.drawVisited = !this.drawVisited;
         }
+        // Player movement
         else if (this.playerEnabled &&
                 (key.equals("left") || key.equals("right")
                 || key.equals("up") || key.equals("down"))) {
             this.player1.move(key);
         }
+        // Solve the maze
         else if (key.equals("d") && !this.isSolving)
         {
             this.isSolving = true;
