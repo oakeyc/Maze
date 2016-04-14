@@ -15,6 +15,10 @@ public class Maze {
     int cols;
     ArrayList<Cell> cells;
     boolean isSolved; // whether the maze is solved
+    Cell savedCell;
+    int savedInt;
+    ArrayList<ArrayList<Cell>> savedList;
+    boolean onOffAnim; // animates
 
     Maze(int rows, int cols) {
         this.rows = rows;
@@ -215,134 +219,109 @@ public class Maze {
         }
     }
 
+    void mazeTick(int row, int col)
+    {
+        this.onOffAnim = true;
+        this.depthSolve(row, col);
+    }
+
     // solves the maze with a breadth first algorithm
     // given a position, we find the solution
     // draws it as it solves
-    void breadthSolve(int row, int col)
-    {   
-        // Generate the hashmap for union-find.
-        HashMap<Integer, Integer> leaders = new HashMap<Integer, Integer>();
-        for (Cell cell : cells) {
-            leaders.put(cell.hashCode(), cell.hashCode());
-        }
-
-        Cell current = this.cellAt(row,  col);
-        ArrayList<Cell> neighbs = current.getNeighbors();
-
-        ArrayList<Cell> workList = new ArrayList<Cell>();
-        ArrayList<Cell> solvePath = new ArrayList<Cell>();
-
-        while (!current.isEndCell())
-        {
-            boolean wasAdded = false;
-
-            for (Cell curr: neighbs)
-            {
-                int leader1 = leaders.get(curr.hashCode());
-                while (leader1 != leaders.get(leader1)) {
-                    leader1 = leaders.get(leader1);
-                }
-                int leader2 = leaders.get(curr.hashCode());
-                while (leader2 != leaders.get(leader2)) {
-                    leader2 = leaders.get(leader2);
-                }
-                if (leader1 != leader2) {
-                    leaders.put(leader1, leader2);
-                    // visit it
-                    workList.add(curr);
-                    wasAdded = true;
-                }
-            }
-
-            current.wasVisited = true;
-            if (!wasAdded)
-                solvePath.remove(solvePath.size() - 1);
-            else
-                solvePath.add(current);
-
-            current = workList.remove(0);
-        }
-
-        for (Cell c : solvePath)
-        {
-            c.isOnPath = true;
-        }
-
-
-        this.isSolved = true;
-    }
-
-    void breadthHelp(HashMap<Integer, Integer> visted)
-    {
-
-    }
-
-    // solves the maze with a depth first algorithm
-    // given a position, we find the solution
-    // draws it as it solves
-    //    void depthSolve(int row, int col)
+    //    void breadthSolve(int row, int col)
+    //    {   
+    //        Cell current = this.cellAt(row,  col);
+    //
+    //        ArrayList<ArrayList<Cell>> toVisit = new ArrayList<ArrayList<Cell>>();
+    //        ArrayList<ArrayList<Cell>> visited = new ArrayList<ArrayList<Cell>>();
+    //        
+    //        ArrayList<Cell> nei = current.getNeighbors();
+    //        toVisit.add(nei);
+    //
+    //        breadthHelp(current, nei.size(), toVisit, visited);
+    //    }
+    //
+    //    // takes in the current cell, the number of cells in its "worklist"
+    //    // a list of lists of different levels of worklists, and the list of lists of paths
+    //    // is the breadth first right now
+    //    boolean breadthHelp(Cell current, int numNeib, ArrayList<ArrayList<Cell>> toVisit,
+    //            ArrayList<ArrayList<Cell>> visited)
     //    {
-    //     // Generate the hashmap for union-find.
-    //        HashMap<Integer, Integer> leaders = new HashMap<Integer, Integer>();
-    //        for (Cell cell : cells) {
-    //            leaders.put(cell.hashCode(), cell.hashCode());
+    //        System.out.println("-------------------------------------------------");
+    //
+    //        if (this.isSolved)
+    //        {
+    //            return true;
+    //        }
+    //        current.wasVisited = true;
+    //
+    //        // if we are at the end of the maze, we've found the solution
+    //        if (current.isEndCell())
+    //        {
+    //            current.isOnPath = true;
+    //            this.isSolved = true;
+    //            return true;
     //        }
     //
-    //        Cell current = this.cellAt(row,  col);
-    //        ArrayList<Cell> neighbs = current.getNeighbors();
-    //
-    //        ArrayList<Cell> workList = new ArrayList<Cell>();
-    //        workList.add(current);
-    //        ArrayList<Cell> solvePath = new ArrayList<Cell>();
-    //        solvePath.add(current);
-    //        
-    //        while (!this.isSolved)
+    //        // no more neighbors, it must return from where it came
+    //        if (numNeib == 0)
     //        {
-    //            current = workList.get(workList.size() - 1);
+    ////            current.isOnPath = false;
+    //            return false;
+    //        }
     //
-    //            System.out.println(current.hashCode());
-    //            if (current.isEndCell()) {
-    //                this.isSolved = true;
-    //                break;
-    //            }
+    //        System.out.println("toVisit size: " + toVisit.size());
+    //        System.out.println("Number of Neighbors: " + numNeib);
     //
-    //            current.wasVisited = true;
-    //            neighbs = current.getNeighbors();
-    //            boolean wasAdded = false;
-    //            
-    //            for (Cell curr: neighbs)
-    //            {
-    //                int leader1 = leaders.get(curr.hashCode());
-    //                while (leader1 != leaders.get(leader1)) {
-    //                    leader1 = leaders.get(leader1);
-    //                }
-    //                int leader2 = leaders.get(current.hashCode());
-    //                while (leader2 != leaders.get(leader2)) {
-    //                    leader2 = leaders.get(leader2);
-    //                }
-    //                if (leader1 != leader2) {
-    //                    leaders.put(leader1, leader2);
-    //                    // visit it
-    //                    workList.add(curr);
-    //                    wasAdded = true;
-    //                }
-    //            }
-    //            
-    //            if (!wasAdded)// && workList.size() != 0 && solvePath.size() != 0)
-    //            {
-    //                workList.remove(workList.size() - 1);
-    //                solvePath.remove(solvePath.size() - 1);
-    //            }
-    //            else
-    //                solvePath.add(current);
-    //        }cd
-    //        
-    //        for (Cell c : solvePath)
+    //        // the next cell is the lastest one
+    //        Cell next = toVisit.get(toVisit.size() - 1).remove(numNeib - 1);
+    //        ArrayList<Cell> neigh = next.getNeighbors();
+    //        ArrayList<Cell> nextNeigh = new ArrayList<Cell>();
+    //
+    //        int count = 0;
+    //        // adding non visited cells into the work list
+    //        for (Cell c : neigh)
     //        {
-    //            c.isOnPath = true;
+    //            if (!c.wasVisited)
+    //            {
+    //                nextNeigh.add(c);
+    //                count++;
+    //            }
+    //        }
+    //        toVisit.add(nextNeigh);
+    //
+    //        // recurse to the next level
+    //        if (breadthHelp(next, count, toVisit, visited))
+    //        {
+    //            current.isOnPath = true;
+    //            return true;
+    //        }
+    //        else // go back a list
+    //        {                       
+    //            while (toVisit.get(toVisit.size() - 1).size() == 0)
+    //            {
+    //                System.out.println("----------REMOVE---------");
+    //                for (Cell c : toVisit.get(toVisit.size() - 1))
+    //                {
+    //                    c.isOnPath = false;
+    //                } 
+    //                toVisit.remove(toVisit.size() - 1);
+    //            }
+    //
+    //            next = toVisit.get(toVisit.size() - 1).get(toVisit.get(toVisit.size() - 1).size() - 1);
+    //            int size = toVisit.get(toVisit.size() - 1).size();
+    //            return breadthHelp(next, size, toVisit, visited);
     //        }
     //    }
 
+    void saveState(Cell curr, int numNeib, ArrayList<ArrayList<Cell>> toVisit)
+    {
+        this.savedCell = curr;
+        this.savedInt = numNeib;
+        this.savedList = toVisit;
+    }
+
+    // solves the maze depth first
     void depthSolve(int row, int col)
     {
         Cell current = this.cellAt(row,  col);
@@ -351,17 +330,26 @@ public class Maze {
         ArrayList<Cell> nei = current.getNeighbors();
         toVisit.add(nei);
 
-        depthHelp(current, nei.size(), 1, toVisit);
+        depthHelp(current, nei.size(), toVisit);
+
+        for (ArrayList<Cell> arr : toVisit)
+        {
+            //            if (arr.size() > 0)
+            //                arr.get(arr.size() - 1).isOnPath = true;
+        }
     }
 
-    // found the solution
-    boolean depthHelp(Cell current, int numNeib, int numList, ArrayList<ArrayList<Cell>> toVisit)
+    // found the solution depth first
+    boolean depthHelp(Cell current, int numNeib, ArrayList<ArrayList<Cell>> toVisit)
     {
-        System.out.println("-------------------------------------------------");
-
+        if (!this.onOffAnim)
+        {
+            this.onOffAnim = false;
+            this.saveState(current, numNeib, toVisit);
+        }
         if (this.isSolved)
         {
-            return true;
+            return false;
         }
         current.wasVisited = true;
 
@@ -376,18 +364,12 @@ public class Maze {
         // no more neighbors, it must return from where it came
         if (numNeib == 0)
         {
-            current.isOnPath = false;
-            System.out.println("Not on the path");
+            //            current.isOnPath = false;
             return false;
         }
 
-        current.isOnPath = true;
-
-        System.out.println("toVisit size: " + toVisit.size());
-        System.out.println("Number of Neighbors: " + numNeib);
-
         // the next cell is the lastest one
-        Cell next = toVisit.get(toVisit.size() - numList).remove(numNeib - 1);
+        Cell next = toVisit.get(toVisit.size() - 1).remove(numNeib - 1);
         ArrayList<Cell> neigh = next.getNeighbors();
         ArrayList<Cell> nextNeigh = new ArrayList<Cell>();
 
@@ -402,37 +384,35 @@ public class Maze {
             }
         }
         toVisit.add(nextNeigh);
-        //        numNeib--;
 
         // recurse to the next level
-        if (depthHelp(next, count, 1, toVisit))
+        if (depthHelp(next, count, toVisit))
         {
+            current.isOnPath = true;
             return true;
         }
         else // go back a list
         {
-//            numList++;
-            toVisit.remove(toVisit.size() - 1);
+            next.isOnPath = false;
 
+            //            for (int i = 0; i < toVisit.get(toVisit.size() - 1).size(); i++)
+            //            {
+            //                toVisit.get(toVisit.size() - 1).get(i).isOnPath = false;
+            //            }
 
-            System.out.println("\nRecusion back to " + (toVisit.size() - 1));
-            System.out.println("Size of last list: " + toVisit.get(toVisit.size() - numList).size() + "\n");
-
-            while (toVisit.get(toVisit.size() - 1).size() > 0)
+            while (toVisit.get(toVisit.size() - 1).size() == 0) // remove bad paths
             {
-
-                // recurse through the next one set of neighbors
-                int tV_size = toVisit.size() - 1;
-                System.out.println("\n\ntV_Size: " + tV_size + " neighbs : " + (toVisit.get(tV_size).size() - 1));
-
-                next = toVisit.get(tV_size).remove(toVisit.get(tV_size).size() - 1);
-
-                return depthHelp(next, toVisit.get(tV_size).size(), 1, toVisit);
+                toVisit.remove(toVisit.size() - 1);
             }
-            
-//            return depthHelp(toVisit.get(0).get(0), 1, numList, toVisit);
+
+            next = toVisit.get(toVisit.size() - 1).get(
+                    toVisit.get(toVisit.size() - 1).size() - 1); // the lastest element           
+            int size = toVisit.get(toVisit.size() - 1).size();
+            //            next.isOnPath = !depthHelp(next, size, toVisit);
+
+            return depthHelp(next, size, toVisit);
         }
-        return false; // idk
+
     }
 
     // Draws this maze onto the given base scene.
@@ -440,7 +420,6 @@ public class Maze {
         for (Cell c: this.cells) {
             base = c.draw(base, drawVisited, drawPath);
         }
-
         return base;
     }
 }

@@ -7,20 +7,22 @@ class MazeWorld extends World {
     static final int COLS = 40;
     static final int WIDTH = COLS * Cell.SIZE;
     static final int HEIGHT = ROWS * Cell.SIZE;
-    
+
     boolean drawVisited;
     boolean drawPath;
-    
+    boolean drawDepth;
+    boolean drawBreadth;
+
     Maze maze;
     Player player1;
-    
+
     MazeWorld() {
         this.maze = new Maze(ROWS, COLS);
         this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
         this.drawVisited = false;
         this.drawPath = false;
     }
-    
+
     @Override
     // Makes the scene for this world.
     public WorldScene makeScene() {
@@ -29,21 +31,35 @@ class MazeWorld extends World {
         return scene;
     }
 
+    void initMaze(int type)
+    {
+        this.drawVisited = false;
+        this.drawPath = false;
+        this.maze.makeMaze(type);
+        this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+    }
+
+    @Override
+    public void onTick()
+    {
+        if (this.drawDepth)
+        {
+            this.maze.depthSolve(player1.row, player1.col);
+        }
+    }
+
     // Handles key presses.
     @Override
     public void onKeyEvent(String key) {
         // Generate a new random maze.
         if (key.equals("r")) {
-            this.maze.makeMaze(0);
-            this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+            initMaze(0);
         }
         else if (key.equals("t")) {
-            this.maze.makeMaze(-1);
-            this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+            initMaze(-1);
         }
         else if (key.equals("y")) {
-            this.maze.makeMaze(1);
-            this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+            initMaze(1);
         }
         else if (key.equals("v")) {
             this.drawVisited = !this.drawVisited;
@@ -54,7 +70,14 @@ class MazeWorld extends World {
         }
         else if (key.equals("d"))
         {
-            this.maze.depthSolve(player1.row, player1.col);
+            this.drawVisited = true;
+            this.drawDepth = true;
+            this.drawPath = true;
+        }
+        else if (key.equals("b"))
+        {
+//            this.maze.breadthSolve(player1.row, player1.col);
+//            this.drawPath = true;
         }
     }
 }
