@@ -1,12 +1,16 @@
 import java.util.ArrayList;
 
-class Solver {
+interface ISolver {
+    boolean nextStep();
+}
+
+class DepthSolver implements Solver {
     ArrayList<Cell> toVisit;
     ArrayList<Cell> parents;
     ArrayList<Cell> path;
     boolean solved;
     
-    Solver(Cell current) {
+    DepthSolver(Cell current) {
         this.toVisit = new ArrayList<Cell>();
         this.toVisit.add(current);
         this.parents = new ArrayList<Cell>();
@@ -16,24 +20,8 @@ class Solver {
         this.solved = false;
     }
     
-    // returns the opposite direction to the given string.
-    String getOpposite(String dir) {
-        if (dir.equals("up")) {
-            return "down";
-        }
-        if (dir.equals("down")) {
-            return "up";
-        }
-        if (dir.equals("left")) {
-            return "right";
-        }
-        if (dir.equals("right")) {
-            return "left";
-        }
-        throw new RuntimeException("Must be a direction.");
-    }
-    
-    boolean nextStep() {
+    @Override
+    public boolean nextStep() {
         Cell current = this.toVisit.remove(this.toVisit.size() - 1);
         Cell parent = this.parents.remove(this.parents.size() - 1);
         current.wasVisited = true;

@@ -77,7 +77,7 @@ class MazeWorld extends World {
             this.drawVisited = true;
             this.drawDepth = true;
             this.drawPath = true;
-            this.solver = new Solver(player1.current);
+            this.solver = new DepthSolver(player1.current);
         }
         else if (key.equals("b"))
         {
