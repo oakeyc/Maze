@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 // Represents a cell in a maze.
 class Cell {
-    static final int SIZE = 15;
+    static final int SIZE = 16;
     
     int r;
     int c;
@@ -65,8 +65,8 @@ class Cell {
         }
         
         base.placeImageXY(image,
-                c * SIZE + SIZE / 2,
-                r * SIZE + SIZE / 2);
+                c * SIZE + SIZE / 2 + SIZE % 2,
+                r * SIZE + SIZE / 2 + SIZE % 2);
         
         return base;
     }
