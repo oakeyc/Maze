@@ -37,27 +37,23 @@ class MazeTraveler {
     // EFFECT: Updates r and c to new position and changes current cell, if possible.
     void move(String dir) {
         if (dir.equals("up")) {
-            if (this.current.top != null) {
+            if (this.moveOnEdge(this.current.top)) {
                 this.row -= 1;
-                this.current = this.current.top.getOtherCell(this.current);
             }
         }
         else if (dir.equals("right")) {
-            if (this.current.right != null) {
+            if (this.moveOnEdge(this.current.right)) {
                 this.col += 1;
-                this.current = this.current.right.getOtherCell(this.current);
             }
         }
         else if (dir.equals("down")) {
-            if (this.current.bottom != null) {
+            if (this.moveOnEdge(this.current.bottom)) {
                 this.row += 1;
-                this.current = this.current.bottom.getOtherCell(this.current);
             }
         }
         else if (dir.equals("left")) {
-            if (this.current.left != null) {
+            if (this.moveOnEdge(this.current.left)) {
                 this.col -= 1;
-                this.current = this.current.left.getOtherCell(this.current);
             }
         }
         else {
@@ -65,5 +61,15 @@ class MazeTraveler {
         }
         
         this.current.wasVisited = true;
+    }
+    
+    // Returns whether a move was made or not;
+    // EFFECT: Changes current cell to the other cell of the edge, if possible.
+    boolean moveOnEdge(Edge e) {
+        if (e != null) {
+            this.current = e.getOtherCell(this.current);
+            return true;
+        }
+        return false;
     }
 }
