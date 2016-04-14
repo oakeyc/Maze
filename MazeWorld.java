@@ -96,5 +96,11 @@ class MazeWorld extends World {
             this.playerEnabled = false;
             this.solver = new BreadthSolver(this.maze.cellAt(0, 0));
         }
+        // Skips solving animation.
+        else if (key.equals("i") && this.isSolving) {
+            while (!this.maze.isSolved) {
+                this.onTick();
+            }
+        }
     }
 }
