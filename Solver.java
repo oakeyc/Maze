@@ -19,7 +19,6 @@ abstract class ASolver {
     
     // Runs the next step of the solving algorithm.
     boolean nextStep() {
-        System.out.println("Solver Step");
         Cell current = this.nextCell();
         Cell parent = this.nextParent();
         current.wasVisited = true;
