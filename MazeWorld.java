@@ -67,7 +67,7 @@ class MazeWorld extends World {
         else if (key.equals("y")) {
             initMaze(1);
         }
-        else if (key.equals("v")) {
+        else if (key.equals("v") && !this.isSolving) {
             this.drawVisited = !this.drawVisited;
         }
         // Player movement
