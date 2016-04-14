@@ -36,11 +36,15 @@ public class Maze {
                 this.cells.add(new Cell(r, c));
             }
         }
+        
+        this.savedCell = null;
+        this.savedInt = 0;
     }
 
     // EFFECT: Sets cells to a new list of cells that represents a new random maze.
     void makeMaze(int type) {
         // Generate grid of cells.
+        this.isSolved = false;
         this.cells = new ArrayList<Cell>();
         ArrayList<ArrayList<Cell>> matrix = new ArrayList<ArrayList<Cell>>();
 
@@ -329,7 +333,7 @@ public class Maze {
         ArrayList<ArrayList<Cell>> toVisit = new ArrayList<ArrayList<Cell>>();
         ArrayList<Cell> nei = current.getNeighbors();
         toVisit.add(nei);
-
+        
         depthHelp(current, nei.size(), toVisit);
 
         for (ArrayList<Cell> arr : toVisit)
