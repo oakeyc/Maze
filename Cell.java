@@ -105,6 +105,10 @@ class Cell {
         {
             neighbors.add(this.top.getOtherCell(this));
         }
+        if (this.left != null)
+        {
+            neighbors.add(this.left.getOtherCell(this));
+        }
         if (this.bottom != null)
         {
             neighbors.add(this.bottom.getOtherCell(this));
@@ -112,10 +116,6 @@ class Cell {
         if (this.right != null)
         {
             neighbors.add(this.right.getOtherCell(this));
-        }
-        if (this.left != null)
-        {
-            neighbors.add(this.left.getOtherCell(this));
         }
         
         return neighbors;
