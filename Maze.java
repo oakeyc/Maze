@@ -106,7 +106,7 @@ public class Maze {
         if (c < 0 || c >= this.cols) {
             throw new IllegalArgumentException("Invalid column.");
         }
-        return this.cells.get(r + c * this.cols);
+        return this.cells.get(r * this.cols + c);
     }
 
     // Generates an array-list of edges connecting all cells in the given matrix,
