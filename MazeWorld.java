@@ -15,7 +15,7 @@ class MazeWorld extends World {
 
     Maze maze;
     Player player1;
-    Solver solver;
+    ISolver solver;
 
     MazeWorld() {
         this.maze = new Maze(ROWS, COLS);

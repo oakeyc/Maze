@@ -4,7 +4,7 @@ interface ISolver {
     boolean nextStep();
 }
 
-class DepthSolver implements Solver {
+class DepthSolver implements ISolver {
     ArrayList<Cell> toVisit;
     ArrayList<Cell> parents;
     ArrayList<Cell> path;
