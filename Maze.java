@@ -167,10 +167,11 @@ public class Maze {
         return result;
     }
     
-    // EFFECT: Resets all cells in this maze wasVisited flag to false.
+    // EFFECT: Resets all cells in this maze wasVisited and isOnPath flags to false.
     void clearVisited() {
         for (Cell c : this.cells) {
             c.wasVisited = false;
+            c.isOnPath = false;
         }
     }
 
