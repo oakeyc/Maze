@@ -3,8 +3,8 @@ import javalib.worldimages.*;
 
 // A world for the maze game.
 class MazeWorld extends World {
-    static final int ROWS = 60;
-    static final int COLS = 100;
+    static final int ROWS = 20;
+    static final int COLS = 40;
     static final int WIDTH = COLS * Cell.SIZE;
     static final int HEIGHT = ROWS * Cell.SIZE;
 
@@ -23,7 +23,7 @@ class MazeWorld extends World {
         this.isSolving = false;
         this.playerEnabled = true;
         this.maze = new Maze(ROWS, COLS);
-        this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+        this.initMaze(0);
     }
 
     @Override
@@ -44,11 +44,13 @@ class MazeWorld extends World {
         this.isSolving = false;
         this.playerEnabled = true;
         this.maze.makeMaze(type);
-        this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+        // Find the solution, then reset wasVisited of the visited cells.
         this.solver = new DepthSolver(this.maze.cellAt(0, 0));
         while(!this.solver.solved) {
             solver.nextStep();
         }
+        this.maze.clearVisited();
+        this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
     }
 
     @Override
@@ -80,12 +82,15 @@ class MazeWorld extends World {
             this.drawVisited = !this.drawVisited;
         }
         // Player movement
-        else if (this.playerEnabled &&
+        else if (this.playerEnabled && !this.player1.solved &&
                 (key.equals("left") || key.equals("right")
                 || key.equals("up") || key.equals("down"))) {
-            this.player1.move(key);
+            if (this.player1.move(key)) {
+                this.drawPath = true;
+                this.drawVisited = true;
+            }
         }
-        // Solve the maze
+        // Solve the maze from the player's current position.
         // Depth first.
         else if (key.equals("d") && !this.isSolving)
         {
@@ -93,8 +98,9 @@ class MazeWorld extends World {
             this.drawVisited = true;
             this.drawPath = false;
             this.maze.clearVisited();
+            this.maze.clearPath();
             this.playerEnabled = false;
-            this.solver = new DepthSolver(this.maze.cellAt(0, 0));
+            this.solver = new DepthSolver(this.player1.current);
         }
         // Breadth first.
         else if (key.equals("b") && !this.isSolving)
@@ -103,21 +109,15 @@ class MazeWorld extends World {
             this.drawVisited = true;
             this.drawPath = false;
             this.maze.clearVisited();
+            this.maze.clearPath();
             this.playerEnabled = false;
-            this.solver = new BreadthSolver(this.maze.cellAt(0, 0));
+            this.solver = new BreadthSolver(this.player1.current);
         }
         // Skips solving animation.
         else if (key.equals("i") && this.isSolving) {
             while (!this.solver.solved) {
                 this.onTick();
             }
-        }
-        // Go back to playing the maze if it's been solved.
-        else if (key.equals("p") && !this.playerEnabled && !this.isSolving) {
-            this.maze.clearVisited();
-            this.drawVisited = false;
-            this.drawPath = false;
-            this.playerEnabled = true;
         }
         // Make vertical and horizontal mazes more or less likely to have respective passages.
         else if (key.equals("1") || key.equals("2") || key.equals("3") ||
