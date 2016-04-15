@@ -46,7 +46,7 @@ abstract class ASolver {
         return this.nextInList(this.toVisit);
     }
     
-    // Returns the next cell in the given list.
+    // Returns the next item in the given list.
     abstract <T> T nextInList(ArrayList<T> cellList);
     
     // Handles getting the path to the current cell.
@@ -68,8 +68,8 @@ class DepthSolver extends ASolver {
     }
     
     @Override
-    // Returns the next cell at the end of the given list.
-    // EFFECT: Removes the last cell from the given list.
+    // Returns the next item at the end of the given list.
+    // EFFECT: Removes the last item from the given list.
     public <T> T nextInList(ArrayList<T> list) {
         return list.remove(list.size() - 1);
     }
@@ -113,8 +113,8 @@ class BreadthSolver extends ASolver {
     }
     
     @Override
-    // Returns the next cell at the beginning of the given list.
-    // EFFECT: Removes the first cell from the given list.
+    // Returns the next item at the beginning of the given list.
+    // EFFECT: Removes the first item from the given list.
     public <T> T nextInList(ArrayList<T> list) {
         return list.remove(0);
     }
