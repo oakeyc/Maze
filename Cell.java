@@ -42,11 +42,14 @@ class Cell {
     // Draws this cell onto the given base scene.
     WorldScene draw(WorldScene base, boolean drawVisited, boolean drawPath) {
         Color color = new Color(0xE0E0E0);
-        if (drawVisited && this.wasVisited) {
-            color = new Color(0x80D0FF);
+        if (this.isEnd) {
+            color = new Color(0x008000);
         }
-        if (drawPath && this.isOnPath) {
-            color = new Color(0x4080FF);
+        else if (drawPath && this.isOnPath) {
+                color = new Color(0x4080FF);
+        }
+        else if (drawVisited && this.wasVisited) {
+            color = new Color(0x80D0FF);
         }
         WorldImage image = new RectangleImage(SIZE, SIZE, "solid", color);
         if (this.rightWall) {
