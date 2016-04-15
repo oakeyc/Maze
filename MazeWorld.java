@@ -36,6 +36,7 @@ class MazeWorld extends World {
         return scene;
     }
 
+    // Initializes a maze of the given type.
     void initMaze(int type)
     {
         this.drawVisited = false;
@@ -113,6 +114,14 @@ class MazeWorld extends World {
             this.drawVisited = false;
             this.drawPath = false;
             this.playerEnabled = true;
+        }
+        else if (key.equals("1") || key.equals("2") || key.equals("3") ||
+                 key.equals("4") || key.equals("5") || key.equals("6") ||
+                 key.equals("7") || key.equals("8") || key.equals("9")) {
+            this.maze.setWeightScale(10 * Integer.parseInt(key));
+        }
+        else if (key.equals("0")) {
+            this.maze.setWeightScale(100);
         }
     }
 }

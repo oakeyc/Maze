@@ -13,11 +13,13 @@ import java.util.HashMap;
 public class Maze {
     int rows;
     int cols;
+    int weightScale;
     ArrayList<Cell> cells;
 
     Maze(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
+        this.weightScale = 50;
         this.makeMaze(0);
     }
 
@@ -25,6 +27,7 @@ public class Maze {
     Maze(int rows, int cols, int notUsed) {
         this.rows = rows;
         this.cols = cols;
+        this.weightScale = 50;
         this.cells = new ArrayList<Cell>();
         for (int r = 0; r < this.rows; r++) {
             for (int c = 0; c < this.cols; c++) {
@@ -56,10 +59,10 @@ public class Maze {
             edges = this.generateEdges(matrix, 0);
         }
         else if (type > 0) {
-            edges = this.generateEdges(matrix, 100);
+            edges = this.generateEdges(matrix, this.weightScale);
         }
         else {
-            edges = this.generateEdges(matrix, -100);
+            edges = this.generateEdges(matrix, -this.weightScale);
         }
 
 
@@ -170,6 +173,11 @@ public class Maze {
         for (Cell c : this.cells) {
             c.wasVisited = false;
         }
+    }
+    
+    // Sets how heavily the vertical- or horizontal-tending board generation weights the edges.
+    void setWeightScale(int scale) {
+        this.weightScale = scale;
     }
 
     // Draws this maze onto the given base scene.
