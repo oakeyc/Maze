@@ -14,7 +14,6 @@ public class Maze {
     int rows;
     int cols;
     ArrayList<Cell> cells;
-    boolean isSolved; // whether the maze is solved
 
     Maze(int rows, int cols) {
         this.rows = rows;
@@ -37,7 +36,6 @@ public class Maze {
     // EFFECT: Sets cells to a new list of cells that represents a new random maze.
     void makeMaze(int type) {
         // Generate grid of cells.
-        this.isSolved = false;
         this.cells = new ArrayList<Cell>();
         ArrayList<ArrayList<Cell>> matrix = new ArrayList<ArrayList<Cell>>();
 
@@ -171,7 +169,6 @@ public class Maze {
     void clearVisited() {
         for (Cell c : this.cells) {
             c.wasVisited = false;
-            c.isOnPath = false;
         }
     }
 
