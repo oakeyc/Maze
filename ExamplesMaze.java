@@ -149,15 +149,33 @@ class ExamplesMaze {
         t.checkException(new IllegalArgumentException("Invalid column."), m, "cellAt", 0, -1);
         t.checkException(new IllegalArgumentException("Invalid column."), m, "cellAt", 0, 5);
     }
+    
+    // Tests the clearVisited method for Mazes.
+    void testClearVisited(Tester t) {
+        Maze m = new Maze(5, 5, 0);
+        m.cellAt(3, 2).wasVisited = true;
+        m.cellAt(4, 1).wasVisited = true;
+        m.cellAt(4, 1).isOnPath = true;
+        m.cellAt(0, 1).isOnPath = true;
+        t.checkExpect(m.cellAt(3, 2).wasVisited, true);
+        t.checkExpect(m.cellAt(4, 1).wasVisited, true);
+        t.checkExpect(m.cellAt(0, 1).wasVisited, false);
+        t.checkExpect(m.cellAt(3, 2).isOnPath, false);
+        t.checkExpect(m.cellAt(4, 1).isOnPath, true);
+        t.checkExpect(m.cellAt(0, 1).isOnPath, true);
+        m.clearVisited();
+        t.checkExpect(m.cellAt(3, 2).wasVisited, false);
+        t.checkExpect(m.cellAt(4, 1).wasVisited, false);
+        t.checkExpect(m.cellAt(0, 1).wasVisited, false);
+        t.checkExpect(m.cellAt(3, 2).isOnPath, false);
+        t.checkExpect(m.cellAt(4, 1).isOnPath, false);
+        t.checkExpect(m.cellAt(0, 1).isOnPath, false);
+    }
 }
 
 /**
  * To test:
- *  Player.move();
- *  depthSolve()
- *  depthHelper()
- *  breadthSolve()
- *  breadthHelper()
+ *  Player.move()
  *  isEnd() ... something like that
  *  onTick
  *  onKeyEvent
