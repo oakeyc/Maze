@@ -68,9 +68,11 @@ class MazeWorld extends World {
         if (key.equals("r")) {
             initMaze(0);
         }
+        // Generate a random vertical maze.
         else if (key.equals("t")) {
             initMaze(-1);
         }
+        // Generate a random horizontal maze.
         else if (key.equals("y")) {
             initMaze(1);
         }
@@ -115,6 +117,7 @@ class MazeWorld extends World {
             this.drawPath = false;
             this.playerEnabled = true;
         }
+        // Make vertical and horizontal mazes more or less likely to have respective passages.
         else if (key.equals("1") || key.equals("2") || key.equals("3") ||
                  key.equals("4") || key.equals("5") || key.equals("6") ||
                  key.equals("7") || key.equals("8") || key.equals("9")) {
