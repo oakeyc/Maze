@@ -8,6 +8,7 @@ class MazeTraveler {
     int row; // row position
     int col; // col position
     Cell current;
+    boolean solved;
     
     // ctor 
     MazeTraveler(int row, int col, Cell current)
@@ -16,6 +17,7 @@ class MazeTraveler {
         this.col = col;
         this.current = current;
         this.current.wasVisited = true;
+        this.solved = false;
     }
     
     // Draws this player on the give base.
@@ -33,8 +35,10 @@ class MazeTraveler {
     }
     
     // Moves the player in the given direction, if possible.
+    // Returns whether this move solved the maze.
     // EFFECT: Updates r and c to new position and changes current cell, if possible.
-    void move(String dir) {
+    //         Also updates the solved flag.
+    boolean move(String dir) {
         if (dir.equals("up")) {
             if (this.moveOnEdge(this.current.top)) {
                 this.row -= 1;
@@ -60,6 +64,8 @@ class MazeTraveler {
         }
         
         this.current.wasVisited = true;
+        this.solved = this.current.isEndCell();
+        return this.solved;
     }
     
     // Returns whether a move was made or not;
