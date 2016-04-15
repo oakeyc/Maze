@@ -1,10 +1,11 @@
+import java.awt.Color;
 import javalib.impworld.*;
 import javalib.worldimages.*;
 
 // A world for the maze game.
 class MazeWorld extends World {
-    static final int ROWS = 20;
-    static final int COLS = 40;
+    static final int ROWS = 60;
+    static final int COLS = 100;
     static final int WIDTH = COLS * Cell.SIZE;
     static final int HEIGHT = ROWS * Cell.SIZE;
 
@@ -33,6 +34,21 @@ class MazeWorld extends World {
         if (this.playerEnabled) {
             scene = this.player1.draw(scene);
         }
+        if (this.player1.solved || this.solver.solved) {
+            WorldImage text = 
+                    new AboveImage(
+                            new TextImage("The maze has been solved!", COLS / 1.5, Color.RED),
+                            new TextImage("Wrong cells visited: " +
+                                    this.maze.getWrongVisitedCells(), COLS / 2, Color.RED));
+            int boxWidth = 2 * WIDTH / 3;
+            int boxHeight = HEIGHT / 6;
+            Color c = new Color(1f, 1f, 1f, 0.8f);
+            WorldImage box = new RectangleImage(boxWidth, boxHeight, "solid", c);
+            box = new OverlayImage(new RectangleImage(boxWidth, boxHeight, "outline", Color.BLACK),
+                    box);
+            WorldImage solved = new OverlayImage(text, box);
+            scene.placeImageXY(solved, WIDTH / 2, HEIGHT / 2);
+        }
         return scene;
     }
 
@@ -49,6 +65,7 @@ class MazeWorld extends World {
         while(!this.solver.solved) {
             solver.nextStep();
         }
+        this.solver = new DepthSolver(this.maze.cellAt(0, 0));
         this.maze.clearVisited();
         this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
     }
