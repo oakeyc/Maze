@@ -151,14 +151,17 @@ public class Maze {
         ArrayList<Edge> result = new ArrayList<Edge>();
         while (edges.size() > 0) {
             Edge edge = edges.remove(0);
+            // Get absolute leader of Cell 1.
             int leader1 = leaders.get(edge.cell1.hashCode());
             while (leader1 != leaders.get(leader1)) {
                 leader1 = leaders.get(leader1);
             }
+            // Get absolute leader of Cell 2.
             int leader2 = leaders.get(edge.cell2.hashCode());
             while (leader2 != leaders.get(leader2)) {
                 leader2 = leaders.get(leader2);
             }
+            // Check for same group, and union if not.
             if (leader1 != leader2) {
                 leaders.put(leader1, leader2);
                 result.add(edge);
@@ -168,7 +171,7 @@ public class Maze {
         return result;
     }
     
-    // EFFECT: Resets all cells in this maze wasVisited and isOnPath flags to false.
+    // EFFECT: Resets all cells in this maze wasVisited flag to false.
     void clearVisited() {
         for (Cell c : this.cells) {
             c.wasVisited = false;
