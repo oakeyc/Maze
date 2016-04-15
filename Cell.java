@@ -43,7 +43,7 @@ class Cell {
     WorldScene draw(WorldScene base, boolean drawVisited, boolean drawPath) {
         Color color = new Color(0xE0E0E0);
         if (this.isEnd) {
-            color = new Color(0x008000);
+            color = new Color(0x00C000);
         }
         else if (drawPath && this.isOnPath) {
                 color = new Color(0x4080FF);

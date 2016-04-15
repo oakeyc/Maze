@@ -168,6 +168,7 @@ class ExamplesMaze {
 /**
  * To test:
  *  Player.move()
+ *  Maze.setWeightScale()
  *  isEnd() ... something like that
  *  onTick
  *  onKeyEvent
