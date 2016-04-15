@@ -86,6 +86,7 @@ class MazeWorld extends World {
             this.player1.move(key);
         }
         // Solve the maze
+        // Depth first.
         else if (key.equals("d") && !this.isSolving)
         {
             this.isSolving = true;
@@ -95,6 +96,7 @@ class MazeWorld extends World {
             this.playerEnabled = false;
             this.solver = new DepthSolver(this.maze.cellAt(0, 0));
         }
+        // Breadth first.
         else if (key.equals("b") && !this.isSolving)
         {
             this.isSolving = true;
