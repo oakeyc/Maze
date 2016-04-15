@@ -20,7 +20,7 @@ public class Maze {
         this.rows = rows;
         this.cols = cols;
         this.weightScale = 50;
-        this.makeMaze(0);
+        this.cells = new ArrayList<Cell>();
     }
 
     // Constructs a maze without random generation (used solely for testing).
@@ -178,9 +178,27 @@ public class Maze {
         }
     }
     
+    // EFFECT: Resets all cells in this maze isOnPath flag to false.
+    void clearPath() {
+        for (Cell c : this.cells) {
+            c.isOnPath = false;
+        }
+    }
+    
     // Sets how heavily the vertical- or horizontal-tending board generation weights the edges.
     void setWeightScale(int scale) {
         this.weightScale = scale;
+    }
+    
+    // Returns the number of cells that were visited that are not on the correct path.
+    int getWrongVisitedCells() {
+        int r = 0;
+        for (Cell c : this.cells) {
+            if (c.wasVisited && !c.isOnPath) {
+                r++;
+            }
+        }
+        return r;
     }
 
     // Draws this maze onto the given base scene.

@@ -154,14 +154,24 @@ class ExamplesMaze {
     void testClearVisited(Tester t) {
         Maze m = new Maze(5, 5, 0);
         m.cellAt(3, 2).wasVisited = true;
-        m.cellAt(4, 1).wasVisited = true;
+        m.cellAt(4, 1).wasVisited = false;
         t.checkExpect(m.cellAt(3, 2).wasVisited, true);
-        t.checkExpect(m.cellAt(4, 1).wasVisited, true);
-        t.checkExpect(m.cellAt(0, 1).wasVisited, false);
+        t.checkExpect(m.cellAt(4, 1).wasVisited, false);
         m.clearVisited();
         t.checkExpect(m.cellAt(3, 2).wasVisited, false);
         t.checkExpect(m.cellAt(4, 1).wasVisited, false);
-        t.checkExpect(m.cellAt(0, 1).wasVisited, false);
+    }
+    
+    // Tests the clearPath method for Mazes.
+    void testClearPath(Tester t) {
+        Maze m = new Maze(5, 5, 0);
+        m.cellAt(3, 2).isOnPath = true;
+        m.cellAt(4, 1).isOnPath = false;
+        t.checkExpect(m.cellAt(3, 2).isOnPath, true);
+        t.checkExpect(m.cellAt(4, 1).isOnPath, false);
+        m.clearPath();
+        t.checkExpect(m.cellAt(3, 2).wasVisited, false);
+        t.checkExpect(m.cellAt(4, 1).wasVisited, false);
     }
 }
 
