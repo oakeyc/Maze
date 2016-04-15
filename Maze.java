@@ -146,7 +146,7 @@ public class Maze {
         }
 
         // Run Kruskal's algorithm on edges using union-find.
-        this.edgeSort(edges);
+        Utils.mergeSort(edges, new EdgeWeightComparator());
         ArrayList<Edge> result = new ArrayList<Edge>();
         while (edges.size() > 0) {
             Edge edge = edges.remove(0);
@@ -165,55 +165,6 @@ public class Maze {
         }
 
         return result;
-    }
-
-    // Sorts the given list of edges in order of weight using merge sort.
-    // EFFECT: Sorts the given list in place.
-    void edgeSort(ArrayList<Edge> edges) {
-        this.mergeHelp(edges, 0, edges.size() - 1);
-    }
-
-    // A helper for edgeSort, sorts the given list from index start to index end,
-    // using mid and the middle index.
-    // EFFECT: Sorts the given list in place from start to end.
-    void mergeHelp(ArrayList<Edge> edges, int start, int end) {
-        // End condition.
-        if (end > start) {
-            int mid = (start + end) / 2;
-            // Split and sort halves.
-            mergeHelp(edges, start, mid);
-            mergeHelp(edges, mid + 1, end);
-            // Merge the halves.
-            int ind1 = start;
-            int ind2 = mid + 1;
-            ArrayList<Edge> result = new ArrayList<Edge>();
-            while (ind1 <= mid && ind2 <= end) {
-                if (edges.get(ind1).weight <= edges.get(ind2).weight) {
-                    result.add(edges.get(ind1));
-                    ind1++;
-                }
-                else {
-                    result.add(edges.get(ind2));
-                    ind2++;
-                }
-            }
-            // Handle extra values in one half.
-            if (ind1 <= mid) {
-                for (int i = ind1; i <= mid; i++) {
-                    result.add(edges.get(i));
-                }
-            }
-            else if (ind2 <= end) {
-                for (int i = ind2; i <= end; i++) {
-                    result.add(edges.get(i));
-                }
-            }
-
-            // Fix original list.
-            for (int i = 0; i < result.size(); i++) {
-                edges.set(start + i, result.get(i));
-            }
-        }
     }
     
     // EFFECT: Resets all cells in this maze wasVisited flag to false.

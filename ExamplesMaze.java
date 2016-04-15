@@ -2,6 +2,7 @@ import tester.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 // Examples and tests
 class ExamplesMaze {
@@ -43,17 +44,17 @@ class ExamplesMaze {
                 0.01);
     }
     
-    // Tests the edgeSort method for Mazes.
-    void testEdgeSort(Tester t) {
-        Maze m = new Maze(5, 5);
+    // Tests the mergeSort method in Utils.
+    void testMergeSort(Tester t) {
         ArrayList<Edge> edges = new ArrayList<Edge>();
         ArrayList<Edge> sorted = new ArrayList<Edge>();
+        Comparator<Edge> comp = new EdgeWeightComparator();
         this.initEdges();
-        m.edgeSort(edges);
+        Utils.mergeSort(edges, comp);
         t.checkExpect(edges, sorted);
         edges.add(this.e1);
         sorted.add(this.e1);
-        m.edgeSort(edges);
+        Utils.mergeSort(edges, comp);
         t.checkExpect(edges, sorted);
         edges.add(this.e2);
         edges.add(this.e3);
@@ -65,7 +66,7 @@ class ExamplesMaze {
         sorted.add(this.e1);
         sorted.add(this.e5);
         sorted.add(this.e3);
-        m.edgeSort(edges);
+        Utils.mergeSort(edges, comp);
         t.checkExpect(edges, sorted);
     }
     
@@ -101,17 +102,17 @@ class ExamplesMaze {
         t.checkExpect(m.kruskal(cells, edges), result);
     }
     
-    // Tests the mergeHelp method for Mazes.
+    // Tests the mergeHelp method in Utils.
     void testMergeHelp(Tester t) {
-        Maze m = new Maze(5, 5);
         ArrayList<Edge> edges = new ArrayList<Edge>();
         ArrayList<Edge> result = new ArrayList<Edge>();
         this.initEdges();
-        m.mergeHelp(edges, 0, -1);
+        Comparator<Edge> comp = new EdgeWeightComparator();
+        Utils.mergeHelp(edges, comp, 0, -1);
         t.checkExpect(edges, result);
         edges.add(this.e1);
         result.add(this.e1);
-        m.mergeHelp(edges, 0, 0);
+        Utils.mergeHelp(edges, comp, 0, 0);
         t.checkExpect(edges, result);
         edges.add(this.e2);
         edges.add(this.e3);
@@ -121,11 +122,11 @@ class ExamplesMaze {
         result.add(this.e4);
         result.add(this.e5);
         result.add(this.e3);
-        m.mergeHelp(edges, 2, 4);
+        Utils.mergeHelp(edges, comp, 2, 4);
         t.checkExpect(edges, result);
         result.set(0, this.e2);
         result.set(1, this.e1);
-        m.mergeHelp(edges, 0, 1);
+        Utils.mergeHelp(edges, comp, 0, 1);
         t.checkExpect(edges, result);
     }
     
