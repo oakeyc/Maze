@@ -6,6 +6,7 @@ abstract class ASolver {
     ArrayList<Cell> path;
     boolean solved;
     
+    // ctor, inits data
     ASolver(Cell current) {
         this.toVisit = new ArrayList<Cell>();
         this.toVisit.add(current);
@@ -61,6 +62,7 @@ abstract class ASolver {
 class DepthSolver extends ASolver {
     ArrayList<Cell> parents;
     
+    // ctor, inits data
     DepthSolver(Cell current) {
         super(current);
         this.parents = new ArrayList<Cell>();
@@ -106,6 +108,7 @@ class BreadthSolver extends ASolver {
     
     ArrayList<ArrayList<Cell>> paths;
     
+    // ctor, inits data
     BreadthSolver(Cell current) {
         super(current);
         this.paths = new ArrayList<ArrayList<Cell>>();

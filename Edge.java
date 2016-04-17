@@ -3,13 +3,14 @@ class Edge {
     int weight;
     Cell cell1;
     Cell cell2;
-    
+
+    // ctor, inits the data
     Edge(Cell cell1, Cell cell2, int weight) {
         this.cell1 = cell1;
         this.cell2 = cell2;
         this.weight = weight;
     }
-    
+
     // Returns the cell other than the given cell,
     //   or throws an exception if that cell is not on this edge.
     Cell getOtherCell(Cell cell) {

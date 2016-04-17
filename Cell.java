@@ -19,6 +19,7 @@ class Cell {
     Edge left;
     Edge right;
     
+    // ctor inits data
     Cell(int r, int c) {
         this.r = r;
         this.c = c;
@@ -75,6 +76,7 @@ class Cell {
     }
     
     @Override
+    // redefines intensional equality
     public boolean equals(Object o) {
         if (o instanceof Cell) {
             Cell c = (Cell) o;
@@ -84,6 +86,7 @@ class Cell {
     }
     
     @Override
+    // redefines the hash code for equality
     public int hashCode() {
         return this.r * 1000 + this.c;
     }
@@ -94,6 +97,8 @@ class Cell {
         return isEnd;
     }
     
+    // if the game is over
+    // EFFECT: changes isEnd to true
     void makeEnd()
     {
         this.isEnd = true;
@@ -120,7 +125,6 @@ class Cell {
         {
             neighbors.add(this.right.getOtherCell(this));
         }
-        
         return neighbors;
     }
 }

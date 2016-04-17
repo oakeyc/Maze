@@ -1,5 +1,4 @@
 import tester.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -30,6 +29,7 @@ class ExamplesMaze {
         this.e6 = new Edge(c1, c4, 5);
     }
     
+    // initializes the cells
     void initCells() {
         this.c1 = new Cell(0, 0);
         this.c2 = new Cell(10, 0);
@@ -41,7 +41,7 @@ class ExamplesMaze {
     void testMaze(Tester t) {
         MazeWorld world = new MazeWorld();
         world.bigBang(MazeWorld.WIDTH, MazeWorld.HEIGHT,
-                0.01);
+                0.001);
     }
     
     // Tests the mergeSort method in Utils.
