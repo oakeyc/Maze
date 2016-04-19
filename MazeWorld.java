@@ -1,3 +1,9 @@
+// Assignment 10
+// Oka Courtney
+// okac
+// Obermiller Karl
+// obermillerk
+
 import java.awt.Color;
 import javalib.impworld.*;
 import javalib.worldimages.*;
@@ -17,7 +23,7 @@ class MazeWorld extends World {
     boolean playerEnabled;
 
     Maze maze;
-    Player player1;
+    MazeTraveler player1;
     ASolver solver;
 
     MazeWorld() {
@@ -70,7 +76,7 @@ class MazeWorld extends World {
                 this.onTick();
             }
         }
-        this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
+        this.player1 = new MazeTraveler(0, 0, this.maze.cellAt(0, 0));
     }
 
     @Override

@@ -1,3 +1,9 @@
+// Assignment 10
+// Oka Courtney
+// okac
+// Obermiller Karl
+// obermillerk
+
 import tester.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +25,9 @@ class ExamplesMaze {
     Edge e6;
     Edge e7;
     
-    Player m1;
-    Player m2;
-    Player m3;
+    MazeTraveler m1;
+    MazeTraveler m2;
+    MazeTraveler m3;
     
     // Initializes Edge fields.
     void initEdges() {
@@ -47,9 +53,9 @@ class ExamplesMaze {
     void initTraveler()
     {
         initCells();
-        this.m1 = new Player(this.c1.r, this.c1.c, this.c1);
-        this.m2 = new Player(this.c2.r, this.c2.c, this.c2);
-        this.m3 = new Player(this.c3.r, this.c3.c, this.c3);
+        this.m1 = new MazeTraveler(this.c1.r, this.c1.c, this.c1);
+        this.m2 = new MazeTraveler(this.c2.r, this.c2.c, this.c2);
+        this.m3 = new MazeTraveler(this.c3.r, this.c3.c, this.c3);
     }
     
     // Runs the game.
@@ -280,35 +286,6 @@ class ExamplesMaze {
         t.checkExpect(breadth.nextStep(), true);
     }
     
-    // tests MazeTraveler move
-    void testMove(Tester t)
-    {
-        this.initCells();
-        this.initTraveler();
-        
-        int r1B = m1.row;
-        int r2B = m2.row;
-        int r3B = m3.row;
-        
-        int c1B = m1.col;
-        int c2B = m2.col;
-        int c3B = m3.col;
-        
-        m1.move("up");
-        m2.move("right");
-        m3.move("down");
-        
-        t.checkExpect(r1B - 1, m1.row);
-        t.checkExpect(r2B, m2.row);
-        t.checkExpect(r3B + 1, m3.row);
-        t.checkExpect(c1B, m1.col);
-        t.checkExpect(c2B, m2.col - 1);
-        t.checkExpect(c3B, m3.col);
-        
-        m1.move("left");
-        t.checkExpect(c1B + 1, m1.col);   
-    }
-    
     // Tests various methods of DepthSolver.
     void testDepthSolver(Tester t) {
         this.initEdges();
@@ -359,6 +336,35 @@ class ExamplesMaze {
         depth.nextStep();
         depth.nextStep();
         t.checkExpect(depth.nextStep(), true);
+    }
+    
+    // tests MazeTraveler move
+    void testMove(Tester t)
+    {
+        this.initCells();
+        this.initTraveler();
+        
+        int r1B = m1.row;
+        int r2B = m2.row;
+        int r3B = m3.row;
+        
+        int c1B = m1.col;
+        int c2B = m2.col;
+        int c3B = m3.col;
+        
+        m1.move("up");
+        m2.move("right");
+        m3.move("down");
+        
+        t.checkExpect(r1B - 1, m1.row);
+        t.checkExpect(r2B, m2.row);
+        t.checkExpect(r3B + 1, m3.row);
+        t.checkExpect(c1B, m1.col);
+        t.checkExpect(c2B, m2.col - 1);
+        t.checkExpect(c3B, m3.col);
+        
+        m1.move("left");
+        t.checkExpect(c1B + 1, m1.col);   
     }
     
     // Tests makeEnd and isEndCell methods for Cells.

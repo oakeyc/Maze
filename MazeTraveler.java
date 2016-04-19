@@ -1,5 +1,9 @@
+// Assignment 10
+// Oka Courtney
+// okac
+// Obermiller Karl
+// obermillerk
 import java.awt.Color;
-
 import javalib.impworld.WorldScene;
 import javalib.worldimages.RectangleImage;
 import javalib.worldimages.WorldImage;
