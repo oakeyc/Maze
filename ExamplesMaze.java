@@ -23,9 +23,6 @@ class ExamplesMaze {
     Player m2;
     Player m3;
     
-    MazeWorld mw1 = new MazeWorld();
-    MazeWorld mw2 = new MazeWorld();
-    
     // Initializes Edge fields.
     void initEdges() {
         this.initCells();
