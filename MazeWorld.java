@@ -51,7 +51,7 @@ class MazeWorld extends World {
                                     this.maze.getWrongVisitedCells(), COLS / 2, Color.RED));
             int boxWidth = 2 * WIDTH / 3;
             int boxHeight = HEIGHT / 6;
-            Color c = new Color(1f, 1f, 1f, 0.8f);
+            Color c = new Color(1f, 1f, 1f, 0.7f);
             WorldImage box = new RectangleImage(boxWidth, boxHeight, "solid", c);
             box = new OverlayImage(new RectangleImage(boxWidth, boxHeight, "outline", Color.BLACK),
                     box);
