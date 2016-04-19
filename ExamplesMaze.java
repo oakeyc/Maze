@@ -41,7 +41,7 @@ class ExamplesMaze {
     void testMaze(Tester t) {
         MazeWorld world = new MazeWorld();
         world.bigBang(MazeWorld.WIDTH, MazeWorld.HEIGHT,
-                0.0001);
+                0.001);
     }
     
     // Tests the mergeSort method in Utils.
@@ -315,6 +315,18 @@ class ExamplesMaze {
         depth.nextStep();
         depth.nextStep();
         t.checkExpect(depth.nextStep(), true);
+    }
+    
+    // Tests makeEnd and isEndCell methods for Cells.
+    void testEndCell(Tester t) {
+        this.initCells();
+        t.checkExpect(this.c1.isEndCell(), false);
+        this.c1.isEnd = true;
+        t.checkExpect(this.c1.isEndCell(), true);
+
+        t.checkExpect(this.c2.isEnd, false);
+        this.c2.makeEnd();
+        t.checkExpect(this.c2.isEnd, true);
     }
 }
 
