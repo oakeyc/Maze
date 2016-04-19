@@ -71,8 +71,11 @@ public class Maze {
         this.edges = this.kruskal(this.cells, edges);
     }
     
+    // Adds a single edge from the list of edges initially generated when generation the maze.
+    // EFFECT: Removes an edge from this.edges, and then adds it to the correct cells,
+    //         effectively knocking down a wall.
     boolean nextBuild() {
-     // Give an edges to its appropriate direction in the appropriate cells.
+        // Give an edge to its appropriate direction in the appropriate cells.
         Edge e = this.edges.remove(0);
         Cell c1 = e.cell1;
         Cell c2 = e.cell2;
