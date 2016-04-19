@@ -1,3 +1,9 @@
+// Assignment 10
+// Oka Courtney
+// okac
+// Obermiller Karl
+// obermillerk
+
 import java.util.ArrayList;
 import java.util.Comparator;
 

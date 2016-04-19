@@ -1,3 +1,9 @@
+// Assignment 10
+// Oka Courtney
+// okac
+// Obermiller Karl
+// obermillerk
+
 import tester.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +25,9 @@ class ExamplesMaze {
     Edge e6;
     Edge e7;
     
-    Player m1;
-    Player m2;
-    Player m3;
+    MazeTraveler m1;
+    MazeTraveler m2;
+    MazeTraveler m3;
     
     MazeWorld mw1 = new MazeWorld();
     MazeWorld mw2 = new MazeWorld();
@@ -50,9 +56,9 @@ class ExamplesMaze {
     void initTraveler()
     {
         initCells();
-        this.m1 = new Player(this.c1.r, this.c1.c, this.c1);
-        this.m2 = new Player(this.c2.r, this.c2.c, this.c2);
-        this.m3 = new Player(this.c3.r, this.c3.c, this.c3);
+        this.m1 = new MazeTraveler(this.c1.r, this.c1.c, this.c1);
+        this.m2 = new MazeTraveler(this.c2.r, this.c2.c, this.c2);
+        this.m3 = new MazeTraveler(this.c3.r, this.c3.c, this.c3);
     }
     
     // Runs the game.
