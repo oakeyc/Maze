@@ -283,35 +283,6 @@ class ExamplesMaze {
         t.checkExpect(breadth.nextStep(), true);
     }
     
-    // tests MazeTraveler move
-    void testMove(Tester t)
-    {
-        this.initCells();
-        this.initTraveler();
-        
-        int r1B = m1.row;
-        int r2B = m2.row;
-        int r3B = m3.row;
-        
-        int c1B = m1.col;
-        int c2B = m2.col;
-        int c3B = m3.col;
-        
-        m1.move("up");
-        m2.move("right");
-        m3.move("down");
-        
-        t.checkExpect(r1B - 1, m1.row);
-        t.checkExpect(r2B, m2.row);
-        t.checkExpect(r3B + 1, m3.row);
-        t.checkExpect(c1B, m1.col);
-        t.checkExpect(c2B, m2.col - 1);
-        t.checkExpect(c3B, m3.col);
-        
-        m1.move("left");
-        t.checkExpect(c1B + 1, m1.col);   
-    }
-    
     // Tests various methods of DepthSolver.
     void testDepthSolver(Tester t) {
         this.initEdges();
@@ -362,6 +333,35 @@ class ExamplesMaze {
         depth.nextStep();
         depth.nextStep();
         t.checkExpect(depth.nextStep(), true);
+    }
+    
+    // tests MazeTraveler move
+    void testMove(Tester t)
+    {
+        this.initCells();
+        this.initTraveler();
+        
+        int r1B = m1.row;
+        int r2B = m2.row;
+        int r3B = m3.row;
+        
+        int c1B = m1.col;
+        int c2B = m2.col;
+        int c3B = m3.col;
+        
+        m1.move("up");
+        m2.move("right");
+        m3.move("down");
+        
+        t.checkExpect(r1B - 1, m1.row);
+        t.checkExpect(r2B, m2.row);
+        t.checkExpect(r3B + 1, m3.row);
+        t.checkExpect(c1B, m1.col);
+        t.checkExpect(c2B, m2.col - 1);
+        t.checkExpect(c3B, m3.col);
+        
+        m1.move("left");
+        t.checkExpect(c1B + 1, m1.col);   
     }
     
     // Tests makeEnd and isEndCell methods for Cells.
