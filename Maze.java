@@ -15,6 +15,7 @@ public class Maze {
     int cols;
     int weightScale;
     ArrayList<Cell> cells;
+    ArrayList<Edge> edges;
 
     Maze(int rows, int cols) {
         this.rows = rows;
@@ -66,38 +67,40 @@ public class Maze {
         }
 
 
-        // Run Kruskal's algorithm on all edges.
-        edges = this.kruskal(this.cells, edges);
-
-        // Give remaining edges to their appropriate direction in the appropriate cells.
-        for (Edge e: edges) {
-            Cell c1 = e.cell1;
-            Cell c2 = e.cell2;
-            if (c1.r != c2.r) {
-                if (c1.r > c2.r) {
-                    c2.bottomWall = false;
-                    c2.bottom = e;
-                    c1.top = e;
-                }
-                else {
-                    c1.bottomWall = false;
-                    c1.bottom = e;
-                    c2.top = e;
-                }
+        // Run Kruskal's algorithm on all edges, store it for construction animation.
+        this.edges = this.kruskal(this.cells, edges);
+    }
+    
+    boolean nextBuild() {
+     // Give an edges to its appropriate direction in the appropriate cells.
+        Edge e = this.edges.remove(0);
+        Cell c1 = e.cell1;
+        Cell c2 = e.cell2;
+        if (c1.r != c2.r) {
+            if (c1.r > c2.r) {
+                c2.bottomWall = false;
+                c2.bottom = e;
+                c1.top = e;
             }
             else {
-                if (c1.c > c2.c) {
-                    c2.rightWall = false;
-                    c2.right = e;
-                    c1.left = e;
-                }
-                else {
-                    c1.rightWall = false;
-                    c1.right = e;
-                    c2.left = e;
-                }
+                c1.bottomWall = false;
+                c1.bottom = e;
+                c2.top = e;
             }
         }
+        else {
+            if (c1.c > c2.c) {
+                c2.rightWall = false;
+                c2.right = e;
+                c1.left = e;
+            }
+            else {
+                c1.rightWall = false;
+                c1.right = e;
+                c2.left = e;
+            }
+        }
+        return !this.edges.isEmpty();
     }
 
     // Returns the cell at the given row and column.

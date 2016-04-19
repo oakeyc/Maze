@@ -11,7 +11,9 @@ class MazeWorld extends World {
 
     boolean drawVisited;
     boolean drawPath;
+    boolean constructAnimate;
     boolean isSolving;
+    boolean isConstructing;
     boolean playerEnabled;
 
     Maze maze;
@@ -23,6 +25,7 @@ class MazeWorld extends World {
         this.drawPath = false;
         this.isSolving = false;
         this.playerEnabled = true;
+        this.constructAnimate = false;
         this.maze = new Maze(ROWS, COLS);
         this.initMaze(0);
     }
@@ -58,22 +61,33 @@ class MazeWorld extends World {
         this.drawVisited = false;
         this.drawPath = false;
         this.isSolving = false;
-        this.playerEnabled = true;
+        this.isConstructing = true;
+        this.playerEnabled = false;
         this.maze.makeMaze(type);
-        // Find the solution, then reset wasVisited of the visited cells.
-        this.solver = new DepthSolver(this.maze.cellAt(0, 0));
-        while(!this.solver.solved) {
-            solver.nextStep();
+        this.solver = new DepthSolver(this.maze.cellAt(0,0));
+        if (!this.constructAnimate) {
+            while(this.isConstructing) {
+                this.onTick();
+            }
         }
-        this.solver = new DepthSolver(this.maze.cellAt(0, 0));
-        this.maze.clearVisited();
         this.player1 = new Player(0, 0, this.maze.cellAt(0, 0));
     }
 
     @Override
     public void onTick()
     {
-        if (this.isSolving && !this.solver.solved && this.solver.nextStep())
+        if (this.isConstructing && !this.maze.nextBuild()) {
+            // Find the solution, then reset wasVisited of the visited cells.
+            this.solver = new DepthSolver(this.maze.cellAt(0, 0));
+            while(!this.solver.solved) {
+                solver.nextStep();
+            }
+            this.solver = new DepthSolver(this.maze.cellAt(0, 0));
+            this.maze.clearVisited();
+            this.isConstructing = false;
+            this.playerEnabled = true;
+        }
+        else if (this.isSolving && !this.solver.solved && this.solver.nextStep())
         {
             this.isSolving = false;
             this.drawPath = true;
@@ -109,7 +123,7 @@ class MazeWorld extends World {
         }
         // Solve the maze from the player's current position.
         // Depth first.
-        else if (key.equals("d") && !this.isSolving)
+        else if (key.equals("d") && !this.isConstructing && !this.isSolving)
         {
             this.isSolving = true;
             this.drawVisited = true;
@@ -120,7 +134,7 @@ class MazeWorld extends World {
             this.solver = new DepthSolver(this.player1.current);
         }
         // Breadth first.
-        else if (key.equals("b") && !this.isSolving)
+        else if (key.equals("b") && !this.isConstructing && !this.isSolving)
         {
             this.isSolving = true;
             this.drawVisited = true;
@@ -130,9 +144,12 @@ class MazeWorld extends World {
             this.playerEnabled = false;
             this.solver = new BreadthSolver(this.player1.current);
         }
+        else if (key.equals("c") && !this.isConstructing) {
+            this.constructAnimate = !this.constructAnimate;
+        }
         // Skips solving animation.
-        else if (key.equals("i") && this.isSolving) {
-            while (!this.solver.solved) {
+        else if (key.equals("i")) {
+            while(this.isConstructing || this.isSolving) {
                 this.onTick();
             }
         }

@@ -179,6 +179,8 @@ class ExamplesMaze {
  * To test:
  *  Player.move()
  *  Maze.setWeightScale()
+ *  Maze.nextBuild()
+ *  ALL OF SOLVER.....
  *  isEnd() ... something like that
  *  onTick
  *  onKeyEvent
