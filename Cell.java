@@ -33,11 +33,6 @@ class Cell {
         this.right = null;
         
         this.isEnd = false;
-        
-        if (r == MazeWorld.ROWS - 1 && c == MazeWorld.COLS - 1)
-        {
-            this.isEnd = true;
-        }
     }
     
     // Draws this cell onto the given base scene.

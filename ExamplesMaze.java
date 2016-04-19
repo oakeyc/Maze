@@ -41,7 +41,7 @@ class ExamplesMaze {
     void testMaze(Tester t) {
         MazeWorld world = new MazeWorld();
         world.bigBang(MazeWorld.WIDTH, MazeWorld.HEIGHT,
-                0.001);
+                0.0001);
     }
     
     // Tests the mergeSort method in Utils.

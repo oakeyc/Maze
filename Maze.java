@@ -48,6 +48,9 @@ public class Maze {
             for (int c = 0; c < this.cols; c++) {
                 Cell cell = new Cell(r, c);
                 this.cells.add(cell);
+                if (r == this.rows - 1 && c == this.cols - 1) {
+                    cell.makeEnd();
+                }
                 row.add(cell);
             }
             matrix.add(row);
