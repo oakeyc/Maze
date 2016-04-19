@@ -69,7 +69,6 @@ public class Maze {
             edges = this.generateEdges(matrix, -this.weightScale);
         }
 
-
         // Run Kruskal's algorithm on all edges, store it for construction animation.
         this.edges = this.kruskal(this.cells, edges);
     }

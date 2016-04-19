@@ -63,6 +63,8 @@ class Utils {
 // Compares two edges by weight.
 class EdgeWeightComparator implements Comparator<Edge> {
 
+    // compares one edge's weight to another edge's weight
+    // returns the difference from the given to this weights
     @Override
     public int compare(Edge e1, Edge e2) {
         return e2.weight - e1.weight;

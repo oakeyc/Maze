@@ -10,11 +10,12 @@ import javalib.worldimages.*;
 
 // A world for the maze game.
 class MazeWorld extends World {
-    static final int ROWS = 60;
-    static final int COLS = 100;
+    static final int ROWS = 60; 
+    static final int COLS = 100; // hard-coded constants
     static final int WIDTH = COLS * Cell.SIZE;
     static final int HEIGHT = ROWS * Cell.SIZE;
 
+    // flags for described behavior
     boolean drawVisited;
     boolean drawPath;
     boolean constructAnimate;
@@ -26,6 +27,7 @@ class MazeWorld extends World {
     MazeTraveler player1;
     ASolver solver;
 
+    // ctor
     MazeWorld() {
         this.drawVisited = false;
         this.drawPath = false;
@@ -40,10 +42,10 @@ class MazeWorld extends World {
     // Makes the scene for this world.
     public WorldScene makeScene() {
         WorldScene scene = this.maze.draw(this.getEmptyScene(), this.drawVisited, this.drawPath);
-        if (this.playerEnabled) {
+        if (this.playerEnabled) { // draws player on
             scene = this.player1.draw(scene);
         }
-        if (this.player1.solved || this.solver.solved) {
+        if (this.player1.solved || this.solver.solved) { // the end visual
             WorldImage text = 
                     new AboveImage(
                             new TextImage("The maze has been solved!", COLS / 1.5, Color.RED),
@@ -79,6 +81,7 @@ class MazeWorld extends World {
         this.player1 = new MazeTraveler(0, 0, this.maze.cellAt(0, 0));
     }
 
+    // handles the next state of the world
     @Override
     public void onTick()
     {
@@ -150,6 +153,7 @@ class MazeWorld extends World {
             this.playerEnabled = false;
             this.solver = new BreadthSolver(this.player1.current);
         }
+        // shows construction on the maze
         else if (key.equals("c") && !this.isConstructing) {
             this.constructAnimate = !this.constructAnimate;
         }
