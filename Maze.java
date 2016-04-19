@@ -72,6 +72,7 @@ public class Maze {
     }
     
     // Adds a single edge from the list of edges initially generated when generation the maze.
+    // Returns whether there are still edges to be added (edges is not empty).
     // EFFECT: Removes an edge from this.edges, and then adds it to the correct cells,
     //         effectively knocking down a wall.
     boolean nextBuild() {

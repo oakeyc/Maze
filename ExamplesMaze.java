@@ -173,13 +173,52 @@ class ExamplesMaze {
         t.checkExpect(m.cellAt(3, 2).wasVisited, false);
         t.checkExpect(m.cellAt(4, 1).wasVisited, false);
     }
+    
+    // Tests the nextBuild method for Mazes.
+    void testNextBuild(Tester t) {
+        Maze m = new Maze(5, 5, 0);
+        Cell c1 = m.cellAt(0, 0);
+        Cell c2 = m.cellAt(0, 1);
+        Cell c3 = m.cellAt(1, 1);
+        Edge e1 = new Edge(c1, c2, 20);
+        Edge e2 = new Edge(c2, c3, 11);
+        ArrayList<Edge> edges = new ArrayList<Edge>();
+        edges.add(e1);
+        edges.add(e2);
+        m.edges = edges;
+        
+        t.checkExpect(c1.right, null);
+        t.checkExpect(c2.left, null);
+        t.checkExpect(c2.bottom, null);
+        t.checkExpect(c3.top, null);
+        
+        t.checkExpect(m.nextBuild(), true);
+        
+        t.checkExpect(c1.right, e1);
+        t.checkExpect(c2.left, e1);
+        t.checkExpect(c2.bottom, null);
+        t.checkExpect(c3.top, null);
+        
+        t.checkExpect(m.nextBuild(), false);
+        
+        t.checkExpect(c2.bottom, e2);
+        t.checkExpect(c3.top, e2);
+    }
+    
+    // Tests the setWeightScale method for Mazes.
+    void testSetWeightScale(Tester t) {
+        Maze m = new Maze(5, 5, 0);
+        t.checkExpect(m.weightScale, 50);
+        m.setWeightScale(20);
+        t.checkExpect(m.weightScale, 20);
+        m.setWeightScale(85);
+        t.checkExpect(m.weightScale, 85);
+    }
 }
 
 /**
  * To test:
  *  Player.move()
- *  Maze.setWeightScale()
- *  Maze.nextBuild()
  *  ALL OF SOLVER.....
  *  isEnd() ... something like that
  *  onTick
