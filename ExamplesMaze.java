@@ -256,6 +256,8 @@ class ExamplesMaze {
         
         // Test addCellToQue
         breadth.addCellToQue(this.c3, this.c1);
+        toVisit.add()
+        t.checkExpect(breadth.toVisit, )
     }
 }
 
