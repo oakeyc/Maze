@@ -17,6 +17,14 @@ class ExamplesMaze {
     Edge e4;
     Edge e5;
     Edge e6;
+    Edge e7;
+    
+    Player m1;
+    Player m2;
+    Player m3;
+    
+    MazeWorld mw1 = new MazeWorld();
+    MazeWorld mw2 = new MazeWorld();
     
     // Initializes Edge fields.
     void initEdges() {
@@ -27,6 +35,7 @@ class ExamplesMaze {
         this.e4 = new Edge(c3, c1, 10);
         this.e5 = new Edge(c3, c2, 45);
         this.e6 = new Edge(c1, c4, 5);
+        this.e7 = null;
     }
     
     // initializes the cells
@@ -35,6 +44,15 @@ class ExamplesMaze {
         this.c2 = new Cell(10, 0);
         this.c3 = new Cell(0, 10);
         this.c4 = new Cell(10, 10);
+    }
+    
+    // initializes the MazeTravelers
+    void initTraveler()
+    {
+        initCells();
+        this.m1 = new Player(this.c1.r, this.c1.c, this.c1);
+        this.m2 = new Player(this.c2.r, this.c2.c, this.c2);
+        this.m3 = new Player(this.c3.r, this.c3.c, this.c3);
     }
     
     // Runs the game.
@@ -256,16 +274,60 @@ class ExamplesMaze {
         
         // Test addCellToQue
         breadth.addCellToQue(this.c3, this.c1);
-        toVisit.add()
-        t.checkExpect(breadth.toVisit, )
+//        toVisit.add()
+//        t.checkExpect(breadth.toVisit, )
     }
+    
+    // tests MazeTraveler move
+    void testMove(Tester t)
+    {
+        this.initCells();
+        this.initTraveler();
+        
+        int r1B = m1.row;
+        int r2B = m2.row;
+        int r3B = m3.row;
+        
+        int c1B = m1.col;
+        int c2B = m2.col;
+        int c3B = m3.col;
+        
+        m1.move("up");
+        m2.move("right");
+        m3.move("down");
+        
+        t.checkExpect(r1B - 1, m1.row);
+        t.checkExpect(r2B, m2.row);
+        t.checkExpect(r3B + 1, m3.row);
+        t.checkExpect(c1B, m1.col);
+        t.checkExpect(c2B, m2.col - 1);
+        t.checkExpect(c3B, m3.col);
+        
+        m1.move("left");
+        t.checkExpect(c1B + 1, m1.col);
+    }
+    
+    // tests moveOnEdge
+    void testMoveOnEdge(Tester t)
+    {
+        this.initCells();
+        this.initEdges();
+        this.initTraveler();
+        
+        Cell currX = this.m1.current;
+        Cell currB = this.m2.current;
+        boolean moving = this.m2.moveOnEdge(this.e1);
+        Cell currA = this.m2.current;
+        
+        t.checkExpect(this.m1.moveOnEdge(this.e7), false);
+        Cell currY = this.m1.current;
+        t.checkExpect(moving, true);
+        t.checkExpect(currX, currY);
+        t.checkExpect(currB != currA, true);
+    }  
+
 }
 
 /**
  * To test:
- *  Player.move()
- *  ALL OF SOLVER.....
- *  isEnd() ... something like that
- *  onTick
- *  onKeyEvent
  */
