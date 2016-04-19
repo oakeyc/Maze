@@ -256,15 +256,71 @@ class ExamplesMaze {
         
         // Test addCellToQue
         breadth.addCellToQue(this.c3, this.c1);
-        toVisit.add()
-        t.checkExpect(breadth.toVisit, )
+        toVisit.remove(0);
+        toVisit.add(this.c3);
+        t.checkExpect(breadth.toVisit, toVisit);
+        
+        breadth.nextStep();
+        breadth.nextStep();
+        t.checkExpect(breadth.nextStep(), true);
+    }
+    
+    // Tests various methods of DepthSolver.
+    void testDepthSolver(Tester t) {
+        this.initEdges();
+        this.c4.isEnd = true;
+        this.c1.right = this.e1;
+        this.c2.left = this.e1;
+        this.c1.bottom = this.e4;
+        this.c3.top = this.e4;
+        this.c3.right = this.e3;
+        this.c4.left = this.e3;
+        DepthSolver depth = new DepthSolver(this.c1);
+        
+        // Test nextInList
+        ArrayList<String> strings = new ArrayList<String>();
+        strings.add("a");
+        strings.add("b");
+        strings.add("c");
+        t.checkExpect(depth.nextInList(strings), "c");
+        ArrayList<String> result = new ArrayList<String>(Arrays.asList("a", "b"));
+        t.checkExpect(strings, result);
+        
+        // Test nextStep
+        t.checkExpect(depth.nextStep(), false);
+        ArrayList<Cell> toVisit = new ArrayList<Cell>(Arrays.asList(this.c3, this.c2));
+        t.checkExpect(depth.toVisit, toVisit);
+        ArrayList<Cell> path = new ArrayList<Cell>(Arrays.asList(this.c1, this.c1));
+        t.checkExpect(depth.path, path);
+        ArrayList<Cell> parents = new ArrayList<Cell>(Arrays.asList(this.c1, this.c1));
+        t.checkExpect(depth.parents, parents);
+        
+        // Test nextCell
+        t.checkExpect(depth.nextCell(), this.c2);
+        
+        // Test handlePath
+        depth.handlePath(this.c2);
+        path.add(this.c2);
+        t.checkExpect(depth.path, path);
+        
+        // Test addCellToQue
+        depth.addCellToQue(this.c3, this.c1);
+        toVisit.remove(1);
+        toVisit.add(this.c3);
+        parents.remove(1);
+        parents.add(this.c1);
+        t.checkExpect(depth.toVisit, toVisit);
+        t.checkExpect(depth.parents, parents);
+        
+        depth.nextStep();
+        depth.nextStep();
+        t.checkExpect(depth.nextStep(), true);
     }
 }
 
 /**
  * To test:
  *  Player.move()
- *  ALL OF SOLVER.....
  *  isEnd() ... something like that
  *  onTick
  *  onKeyEvent
