@@ -132,7 +132,12 @@ class BreadthSolver extends ASolver {
     // EFFECT: Resets the path to a copy of the path of the current cell's parent
     //         (which is stored in paths), then adds the current cell to that path.
     public void handlePath(Cell current) {
-        this.path = (ArrayList<Cell>)(this.nextInList(this.paths).clone());
+        this.path = this.nextInList(this.paths);
+        ArrayList<Cell> newPath = new ArrayList<Cell>();
+        for (Cell c : this.path) {
+            newPath.add(c);
+        }
+        this.path = newPath;
         this.path.add(current);
     }
     
