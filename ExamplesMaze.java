@@ -259,12 +259,18 @@ class ExamplesMaze {
         
         // Test nextStep
         t.checkExpect(breadth.nextStep(), false);
-        ArrayList<Cell> toVisit = new ArrayList<Cell>(Arrays.asList(this.c3, this.c2));
+        ArrayList<Cell> toVisit = new ArrayList<Cell>();
+        toVisit.add(this.c3);
+        toVisit.add(this.c2);
         t.checkExpect(breadth.toVisit, toVisit);
-        ArrayList<Cell> path = new ArrayList<Cell>(Arrays.asList(this.c1, this.c1));
+        ArrayList<Cell> path = new ArrayList<Cell>();
+        path.add(this.c1);
+        path.add(this.c1);
         t.checkExpect(breadth.path, path);
         ArrayList<ArrayList<Cell>> paths =
-                new ArrayList<ArrayList<Cell>>(Arrays.asList(path, path));
+                new ArrayList<ArrayList<Cell>>();
+        paths.add(path);
+        paths.add(path);
         t.checkExpect(breadth.paths, paths);
         
         // Test nextCell
