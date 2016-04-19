@@ -12,7 +12,7 @@ import java.util.ArrayList;
 // Represents a cell in a maze.
 class Cell {
     static final int SIZE = 16;
-    
+
     int r;
     int c;
     boolean rightWall;
@@ -24,7 +24,7 @@ class Cell {
     Edge bottom;
     Edge left;
     Edge right;
-    
+
     // ctor inits data
     Cell(int r, int c) {
         this.r = r;
@@ -37,10 +37,10 @@ class Cell {
         this.bottom = null;
         this.left = null;
         this.right = null;
-        
+
         this.isEnd = false;
     }
-    
+
     // Draws this cell onto the given base scene.
     WorldScene draw(WorldScene base, boolean drawVisited, boolean drawPath) {
         Color color = new Color(0xE0E0E0);
@@ -48,7 +48,7 @@ class Cell {
             color = new Color(0x00C000);
         }
         else if (drawPath && this.isOnPath) {
-                color = new Color(0x4080FF);
+            color = new Color(0x4080FF);
         }
         else if (drawVisited && this.wasVisited) {
             color = new Color(0x80D0FF);
@@ -68,14 +68,14 @@ class Cell {
                     -SIZE / 2 + 1,
                     image);
         }
-        
+
         base.placeImageXY(image,
                 c * SIZE + SIZE / 2 + SIZE % 2,
                 r * SIZE + SIZE / 2 + SIZE % 2);
-        
+
         return base;
     }
-    
+
     @Override
     // redefines intensional equality
     public boolean equals(Object o) {
@@ -85,26 +85,26 @@ class Cell {
         }
         return false;
     }
-    
+
     @Override
     // redefines the hash code for equality
     public int hashCode() {
         return this.r * 1000 + this.c;
     }
-    
+
     // whether end cell or not
     boolean isEndCell()
     {
         return isEnd;
     }
-    
+
     // if the game is over
     // EFFECT: changes isEnd to true
     void makeEnd()
     {
         this.isEnd = true;
     }
-    
+
     // given nothing
     // returns the list of neighboring cells
     ArrayList<Cell> getNeighbors()

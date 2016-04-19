@@ -29,9 +29,6 @@ class ExamplesMaze {
     MazeTraveler m2;
     MazeTraveler m3;
     
-    MazeWorld mw1 = new MazeWorld();
-    MazeWorld mw2 = new MazeWorld();
-    
     // Initializes Edge fields.
     void initEdges() {
         this.initCells();

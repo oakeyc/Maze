@@ -24,7 +24,7 @@ class MazeWorld extends World {
     boolean playerEnabled;
 
     Maze maze;
-    MazeTraveler player1;
+    MazeTraveler player1; // the player
     ASolver solver;
 
     // ctor
@@ -72,9 +72,9 @@ class MazeWorld extends World {
         this.isConstructing = true;
         this.playerEnabled = false;
         this.maze.makeMaze(type);
-        this.solver = new DepthSolver(this.maze.cellAt(0,0));
+        this.solver = new DepthSolver(this.maze.cellAt(0, 0));
         if (!this.constructAnimate) {
-            while(this.isConstructing) {
+            while (this.isConstructing) {
                 this.onTick();
             }
         }
@@ -88,7 +88,7 @@ class MazeWorld extends World {
         if (this.isConstructing && !this.maze.nextBuild()) {
             // Find the solution, then reset wasVisited of the visited cells.
             this.solver = new DepthSolver(this.maze.cellAt(0, 0));
-            while(!this.solver.solved) {
+            while (!this.solver.solved) {
                 solver.nextStep();
             }
             this.solver = new DepthSolver(this.maze.cellAt(0, 0));
@@ -159,7 +159,7 @@ class MazeWorld extends World {
         }
         // Skips solving animation.
         else if (key.equals("i")) {
-            while(this.isConstructing || this.isSolving) {
+            while (this.isConstructing || this.isSolving) {
                 this.onTick();
             }
         }

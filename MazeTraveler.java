@@ -8,6 +8,7 @@ import javalib.impworld.WorldScene;
 import javalib.worldimages.RectangleImage;
 import javalib.worldimages.WorldImage;
 
+// represents something that travels on the maze
 class MazeTraveler {
     int row; // row position
     int col; // col position
