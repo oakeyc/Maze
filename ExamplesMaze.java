@@ -394,7 +394,6 @@ class ExamplesMaze {
         t.checkExpect(currX, currY);
         t.checkExpect(currB != currA, true);
     }  
-
 }
 
 /**
