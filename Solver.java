@@ -16,6 +16,7 @@ abstract class ASolver {
     }
     
     // Runs the next step of the solving algorithm.
+    // Returns whether the maze has been solved.
     boolean nextStep() {
         Cell current = this.nextCell();
         current.wasVisited = true;

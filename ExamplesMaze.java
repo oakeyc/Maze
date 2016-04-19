@@ -214,6 +214,49 @@ class ExamplesMaze {
         m.setWeightScale(85);
         t.checkExpect(m.weightScale, 85);
     }
+    
+    // Tests various methods of BreadthSolver.
+    void testBreadthSolver(Tester t) {
+        this.initEdges();
+        this.c4.isEnd = true;
+        this.c1.right = this.e1;
+        this.c2.left = this.e1;
+        this.c1.bottom = this.e4;
+        this.c3.top = this.e4;
+        this.c3.right = this.e3;
+        this.c4.left = this.e3;
+        BreadthSolver breadth = new BreadthSolver(this.c1);
+        
+        // Test nextInList
+        ArrayList<String> strings = new ArrayList<String>();
+        strings.add("a");
+        strings.add("b");
+        strings.add("c");
+        t.checkExpect(breadth.nextInList(strings), "a");
+        ArrayList<String> result = new ArrayList<String>(Arrays.asList("b", "c"));
+        t.checkExpect(strings, result);
+        
+        // Test nextStep
+        t.checkExpect(breadth.nextStep(), false);
+        ArrayList<Cell> toVisit = new ArrayList<Cell>(Arrays.asList(this.c3, this.c2));
+        t.checkExpect(breadth.toVisit, toVisit);
+        ArrayList<Cell> path = new ArrayList<Cell>(Arrays.asList(this.c1, this.c1));
+        t.checkExpect(breadth.path, path);
+        ArrayList<ArrayList<Cell>> paths =
+                new ArrayList<ArrayList<Cell>>(Arrays.asList(path, path));
+        t.checkExpect(breadth.paths, paths);
+        
+        // Test nextCell
+        t.checkExpect(breadth.nextCell(), this.c3);
+        
+        // Test handlePath
+        breadth.handlePath(this.c3);
+        path.add(this.c3);
+        t.checkExpect(breadth.path, path);
+        
+        // Test addCellToQue
+        breadth.addCellToQue(this.c3, this.c1);
+    }
 }
 
 /**
