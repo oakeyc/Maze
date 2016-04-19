@@ -356,15 +356,15 @@ class ExamplesMaze {
         m2.move("right");
         m3.move("down");
         
-        t.checkExpect(r1B - 1, m1.row);
+        t.checkExpect(0, m1.row);
         t.checkExpect(r2B, m2.row);
-        t.checkExpect(r3B + 1, m3.row);
+        t.checkExpect(0, m3.row);
         t.checkExpect(c1B, m1.col);
-        t.checkExpect(c2B, m2.col - 1);
+        t.checkExpect(-1, m2.col - 1);
         t.checkExpect(c3B, m3.col);
         
         m1.move("left");
-        t.checkExpect(c1B + 1, m1.col);   
+        t.checkExpect(0, m1.col);   
     }
     
     // Tests makeEnd and isEndCell methods for Cells.
