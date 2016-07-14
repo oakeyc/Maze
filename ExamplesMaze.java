@@ -403,6 +403,13 @@ class ExamplesMaze {
         t.checkExpect(currX, currY);
         t.checkExpect(currB != currA, true);
     }  
+    
+    public static void main(String[] args) {
+        MazeWorld m = new MazeWorld();
+
+        m.bigBang(MazeWorld.WIDTH, MazeWorld.HEIGHT,
+                0.001);
+    }
 }
 
 /**
